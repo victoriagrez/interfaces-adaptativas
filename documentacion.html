@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Documentación · DS-01 Adaptivo y prototipo P2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>:root{--c-primary: #1B4D7A;--c-secondary: #123858;--c-accent: #8FC6E8;--c-background: #F5F6F3;--c-surface: #FFFFFF;--c-text-primary: #17201F;--c-text-muted: #687370;--c-border: #C7D0CB;--c-on-primary: #FFFFFF;--c-focus: #5B66D6;--c-success: #23805D;--c-success-pale: #E3F2E9;--c-success-border: #8BC6B0;--c-success-text: #14563E;--c-warning: #A95F0D;--c-warning-pale: #FFF1D6;--c-warning-border: #DBA34B;--c-warning-text: #74400A;--c-error: #B43A3A;--c-error-pale: #FBE8E6;--c-error-border: #DA8E88;--c-error-text: #842828;--c-info: #3562A6;--c-info-pale: #E7EFFB;--c-info-border: #91ADD6;--c-info-text: #234A84;--c-primary-pale: #E5EEF7;--c-track: #DFE5E1;--c-line: #DCE2DE;--c-paper-muted: #EDF1ED;--sp-xs: 4px;--sp-sm: 8px;--sp-md: 16px;--sp-lg: 24px;--sp-xl: 32px;--r-sm: 6px;--r-md: 10px;--r-lg: 16px;--r-pill: 999px;--sh-sm: 0 2px 8px rgba(23, 32, 31, 0.06);--sh-md: 0 8px 24px rgba(23, 32, 31, 0.08);--sh-lg: 0 18px 52px rgba(23, 32, 31, 0.15);--fs-heading-xl: 52px;--lh-heading-xl: 56px;--fs-heading-lg: 32px;--lh-heading-lg: 38px;--fs-heading-md: 22px;--lh-heading-md: 28px;--fs-body: 16px;--lh-body: 24px;--fs-small: 14px;--lh-small: 20px;--fs-label: 13px;--lh-label: 16px;--font: "IBM Plex Sans", system-ui, sans-serif;--font-mono: "IBM Plex Mono", ui-monospace, monospace;--tracking-display: -0.035em;--focus-ring: 0 0 0 3px var(--c-focus);--focus-width: 3px;--focus-offset: 2px;--target-min: 44px;--motion-fast: 120ms;--motion-base: 200ms;--motion-slow: 320ms;}</style>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--c-background);color:var(--c-text-primary);font-family:var(--font);font-size:var(--fs-body);line-height:var(--lh-body)}
+button,select{font:inherit;color:inherit}
+:focus-visible{outline:var(--focus-width) solid var(--c-focus);outline-offset:var(--focus-offset);border-radius:var(--r-sm)}
+.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:16px;background:var(--c-surface);padding:8px 12px;z-index:99}
+a{color:var(--c-primary)}
+code,pre{font-family:var(--font-mono)}
+code{font-size:.88em;background:var(--c-paper-muted);padding:1px 6px;border-radius:var(--r-sm)}
+
+/* ───── estructura ───── */
+.side{position:fixed;inset:0 auto 0 0;width:292px;background:var(--c-deep,#102A43);background:#102A43;color:#fff;padding:var(--sp-lg) var(--sp-md);overflow:auto;z-index:20}
+.side h2{margin:0;font-size:var(--fs-body);font-weight:600;color:#fff;letter-spacing:-.01em}
+.side .ver{font-size:var(--fs-label);color:#8FC6E8;margin:4px 0 var(--sp-md)}
+.side nav a{display:block;color:#C9D6E2;text-decoration:none;font-size:var(--fs-small);padding:6px 10px;border-radius:var(--r-md);min-height:32px}
+.side nav a:hover{background:rgba(255,255,255,.08);color:#fff}
+.side nav a.on{background:rgba(143,198,232,.18);color:#fff}
+.side nav .grp{font-size:var(--fs-label);color:#8FC6E8;margin:var(--sp-md) 10px 4px;font-weight:500}
+.ctrl{margin-top:var(--sp-lg);padding-top:var(--sp-md);border-top:1px solid rgba(255,255,255,.15);font-size:var(--fs-small)}
+.ctrl label{display:block;margin:var(--sp-xs) 0;color:#C9D6E2}
+.ctrl select{width:100%;margin-top:4px;padding:8px;border-radius:var(--r-md);border:1px solid rgba(255,255,255,.25);background:#1b3a57;color:#fff}
+main{margin-left:292px;padding:var(--sp-xl) var(--sp-xl) 120px}
+.wrap{max-width:1000px;margin:0 auto}
+section.doc{padding:var(--sp-xl) 0;border-bottom:1px solid var(--c-line)}
+section.doc>h2{font-size:var(--fs-heading-lg);line-height:var(--lh-heading-lg);letter-spacing:-.03em;font-weight:500;margin:0 0 var(--sp-sm);color:var(--c-primary)}
+section.doc>.lead{color:var(--c-text-muted);max-width:70ch;margin:0 0 var(--sp-lg)}
+h3{font-size:var(--fs-heading-md);line-height:var(--lh-heading-md);font-weight:600;margin:var(--sp-xl) 0 var(--sp-sm)}
+h4{font-size:var(--fs-body);font-weight:600;margin:var(--sp-lg) 0 var(--sp-xs)}
+p{margin:0 0 var(--sp-md);max-width:72ch}
+ul,ol{max-width:72ch;margin:0 0 var(--sp-md);padding-left:22px}li{margin:4px 0}
+@media(max-width:980px){.side{position:static;width:auto}main{margin:0;padding:var(--sp-md)}}
+.hero{padding:var(--sp-xl) 0 var(--sp-lg)}
+.hero h1{font-size:clamp(34px,5vw,var(--fs-heading-xl));line-height:1.06;letter-spacing:var(--tracking-display);font-weight:500;color:var(--c-primary);margin:0 0 var(--sp-md);max-width:18ch}
+.hero p{font-size:20px;color:var(--c-text-muted);max-width:60ch}
+.meta{display:flex;gap:var(--sp-sm);flex-wrap:wrap;margin-top:var(--sp-md)}
+.chip{font-size:var(--fs-label);padding:4px 12px;border-radius:var(--r-pill);border:1px solid var(--c-border);background:var(--c-surface);color:var(--c-text-primary)}
+.chip.ok{background:var(--c-success-pale);border-color:var(--c-success-border);color:var(--c-success-text)}
+.chip.warn{background:var(--c-warning-pale);border-color:var(--c-warning-border);color:var(--c-warning-text)}
+
+/* ───── tablas, notas, código ───── */
+table.t{width:100%;border-collapse:collapse;font-size:var(--fs-small);background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);overflow:hidden;margin:0 0 var(--sp-md)}
+table.t th,table.t td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--c-line);vertical-align:top}
+table.t th{background:var(--c-paper-muted);font-weight:600;white-space:nowrap}
+table.t tr:last-child td{border-bottom:0}
+.tw{overflow-x:auto}
+.note{border-radius:var(--r-md);padding:var(--sp-md);border:1px solid var(--c-info-border);background:var(--c-info-pale);color:var(--c-info-text);margin:0 0 var(--sp-md);max-width:72ch;font-size:var(--fs-small)}
+.note.warn{border-color:var(--c-warning-border);background:var(--c-warning-pale);color:var(--c-warning-text)}
+.note.ok{border-color:var(--c-success-border);background:var(--c-success-pale);color:var(--c-success-text)}
+.note strong{display:block;margin-bottom:2px}
+.note p{margin:0 0 6px}
+pre.code{background:#0F1E2D;color:#E6EEF5;border-radius:var(--r-md);padding:var(--sp-md);font-size:12.5px;line-height:1.55;overflow:auto;max-height:340px;margin:var(--sp-sm) 0 var(--sp-md)}
+body.nocode pre.code{display:none}
+.tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:var(--r-pill);font-family:var(--font)}
+.tag.INVARIANT{background:#E7EFFB;color:#3562A6}.tag.CONSTRAINED{background:#FFF1D6;color:#935311}
+.tag.OPEN{background:#E3F2E9;color:#237152}.tag.SISTEMA{background:#EDF1ED;color:#394442}
+body[data-focus="INVARIANT"] .grow:not([data-tag="INVARIANT"]),body[data-focus="CONSTRAINED"] .grow:not([data-tag="CONSTRAINED"]),body[data-focus="OPEN"] .grow:not([data-tag="OPEN"]),body[data-focus="SISTEMA"] .grow:not([data-tag="SISTEMA"]){opacity:.25}
+.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--sp-sm);margin:var(--sp-md) 0}
+.flow .n{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:var(--sp-md);position:relative}
+.flow .n b{display:block;color:var(--c-primary);margin-bottom:4px}
+.flow .n span{font-size:var(--fs-small);color:var(--c-text-muted);display:block}
+.flow .n:not(:last-child)::after{content:"→";position:absolute;right:-14px;top:50%;transform:translateY(-50%);color:var(--c-primary);font-weight:600;z-index:2}
+@media(max-width:900px){.flow{grid-template-columns:1fr}.flow .n::after{display:none}}
+.loop{border:2px dashed var(--c-info-border);border-radius:var(--r-md);padding:var(--sp-sm) var(--sp-md);color:var(--c-info-text);font-size:var(--fs-small);margin-bottom:var(--sp-md);background:var(--c-info-pale)}
+.sheet{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--sp-lg);margin:0 0 var(--sp-lg)}
+.sheet>header{display:flex;gap:var(--sp-sm);align-items:center;flex-wrap:wrap;margin-bottom:var(--sp-xs)}
+.sheet>header h4{margin:0;font-size:var(--fs-heading-md);font-weight:600}
+.sheet .sub{color:var(--c-text-muted);font-size:var(--fs-small);margin:0 0 var(--sp-md);max-width:72ch}
+.spec{background:var(--c-background);border:1px dashed var(--c-border);border-radius:var(--r-md);padding:var(--sp-lg);display:flex;flex-wrap:wrap;gap:var(--sp-md);align-items:flex-start;margin-bottom:var(--sp-md)}
+.spec>.grid,.spec>.sp2,.spec>.o-head,.spec>.nav,.spec>.mp,.spec>.al,.spec>.pb{width:100%}
+.spec.frame{display:block;pointer-events:auto}
+.screen{border:1px solid var(--c-border);border-radius:var(--r-lg);overflow:hidden;background:var(--c-background);margin-bottom:var(--sp-lg)}
+.screen .bar{background:var(--c-surface);border-bottom:1px solid var(--c-border);padding:10px var(--sp-md);font-size:var(--fs-small);display:flex;gap:var(--sp-sm);align-items:center}
+.screen .bar b{color:var(--c-primary)}
+.screen .body{padding:var(--sp-lg);pointer-events:none;display:flex;flex-direction:column;gap:var(--sp-lg)}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:var(--sp-sm)}
+.sw .c{border:1px solid var(--c-border);border-radius:var(--r-md);overflow:hidden;background:var(--c-surface)}
+.sw .c i{display:block;height:54px;border-bottom:1px solid var(--c-border)}
+.sw .c div{padding:8px 10px;font-size:12.5px;line-height:1.45}
+.sw .c b{font-size:var(--fs-small)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-lg)}@media(max-width:900px){.two{grid-template-columns:1fr}}
+.demo{border:1px solid var(--c-border);border-radius:var(--r-lg);background:var(--c-surface);padding:var(--sp-lg);margin-bottom:var(--sp-lg)}
+.demo .live{display:flex;flex-direction:column;gap:var(--sp-md);background:var(--c-background);border-radius:var(--r-md);padding:var(--sp-lg);margin:var(--sp-md) 0}
+.btn{min-height:var(--target-min);padding:0 var(--sp-md);border-radius:var(--r-md);border:1px solid var(--c-primary);background:var(--c-surface);color:var(--c-primary);font-weight:600;cursor:pointer}
+.btn:hover{background:var(--c-background)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:var(--fs-small);margin:0 0 var(--sp-md)}.kv dt{color:var(--c-text-muted)}.kv dd{margin:0}
+.swatch-t{display:flex;gap:var(--sp-md);flex-wrap:wrap;align-items:flex-end}
+.bx{background:var(--c-surface);border:1px solid var(--c-border);padding:var(--sp-md);font-size:12px;text-align:center;min-width:92px}
+.spacebar{height:14px;background:var(--c-primary);border-radius:3px}
+.tree{font-family:var(--font-mono);font-size:12.5px;line-height:1.7;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:var(--sp-md);overflow:auto;margin-bottom:var(--sp-md)}
+</style>
+<style>
+.o-head{display:flex;flex-direction:column;gap:var(--sp-sm);align-items:flex-start;max-width:68ch}
+.o-head>*{margin:0}
+h1.h-xl{font-size:clamp(32px,4.4vw,var(--fs-heading-xl));line-height:1.08;letter-spacing:var(--tracking-display);font-weight:500;color:var(--c-primary)}
+h2.h-lg{font-size:var(--fs-heading-lg);line-height:var(--lh-heading-lg);letter-spacing:-.03em;font-weight:500}
+h3.h-md{font-size:var(--fs-heading-md);line-height:var(--lh-heading-md);font-weight:600}
+.p-body{margin:0;max-width:68ch}
+.p-muted{margin:0;color:var(--c-text-muted);font-size:var(--fs-small);line-height:var(--lh-small, 1.5);max-width:68ch}
+.bd{display:inline-flex;align-items:center;gap:6px;min-height:28px;font-size:var(--fs-label);line-height:var(--lh-label);font-weight:500;padding:4px 10px;border-radius:var(--r-pill);border:1px solid var(--c-border);background:var(--c-surface);color:var(--c-text-muted)}
+.bd.success{color:var(--c-success-text);border-color:var(--c-success-border);background:var(--c-success-pale)}
+.bd.warning{color:var(--c-warning-text);border-color:var(--c-warning-border);background:var(--c-warning-pale)}
+.bd.error{color:var(--c-error-text);border-color:var(--c-error-border);background:var(--c-error-pale)}
+.bd.info{color:var(--c-info-text);border-color:var(--c-info-border);background:var(--c-info-pale)}
+.ic{flex:none;display:inline-block;vertical-align:-3px}
+hr.dv{border:0;border-top:1px solid var(--c-border);width:100%;margin:var(--sp-xs) 0}
+.dv-v{align-self:stretch;width:1px;min-height:var(--sp-lg);background:var(--c-border);margin:0 var(--sp-xs)}
+.stat-v{font-size:var(--fs-heading-lg);line-height:1.1;letter-spacing:-.03em;font-weight:500;color:var(--c-primary)}
+.ab{min-height:var(--target-min);padding:0 var(--sp-lg);border-radius:var(--r-md);font-weight:600;cursor:pointer;font-size:var(--fs-body);border:1px solid var(--c-primary)}
+.ab.p{background:var(--c-primary);color:var(--c-on-primary)}
+.ab.p:hover{background:var(--c-secondary);border-color:var(--c-secondary)}
+.ab.s{background:var(--c-surface);color:var(--c-primary)}
+.ab.s:hover{background:var(--c-background)}
+.row-act{display:flex;gap:var(--sp-sm);flex-wrap:wrap;align-items:center}
+.card{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-lg);padding:var(--sp-lg);box-shadow:var(--sh-sm);display:flex;flex-direction:column;gap:var(--sp-sm)}
+.card>*{margin:0}
+.stat{border:1px solid var(--c-border);border-radius:var(--r-md);padding:var(--sp-md);background:var(--c-surface);display:flex;flex-direction:column;gap:var(--sp-xs);align-items:flex-start}
+.stat>*{margin:0}
+.grid{display:grid;gap:var(--sp-md);align-items:start}
+.grid.c1{grid-template-columns:1fr}.grid.c2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.c3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid.c4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:820px){.grid.c2,.grid.c3,.grid.c4{grid-template-columns:1fr}}
+.nav{display:flex;gap:var(--sp-xs);flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--c-border);padding-bottom:var(--sp-sm)}
+.nav .ab{min-height:var(--target-min);padding:0 var(--sp-md);font-size:var(--fs-small);border-color:transparent;background:none;color:var(--c-text-muted)}
+.nav .ab:hover{color:var(--c-primary);background:var(--c-surface)}
+.al{border-radius:var(--r-md);padding:var(--sp-md);border:1px solid var(--c-border);background:var(--c-surface);border-left-width:4px;display:flex;flex-direction:column;gap:var(--sp-xs)}
+.al>*{margin:0}
+.al.info{background:var(--c-info-pale);border-color:var(--c-info-border);border-left-color:var(--c-info);color:var(--c-info-text)}
+.al.success{background:var(--c-success-pale);border-color:var(--c-success-border);border-left-color:var(--c-success);color:var(--c-success-text)}
+.al.warning{background:var(--c-warning-pale);border-color:var(--c-warning-border);border-left-color:var(--c-warning);color:var(--c-warning-text)}
+.al.error{background:var(--c-error-pale);border-color:var(--c-error-border);border-left-color:var(--c-error);color:var(--c-error-text)}
+.al .al-t{display:flex;gap:var(--sp-sm);align-items:center;font-weight:600}
+details.al>summary{cursor:pointer;font-weight:600;min-height:24px}
+
+/* variantes de composición */
+.card.compact{padding:var(--sp-md);gap:var(--sp-xs)}.card.raised{box-shadow:var(--sh-md)}
+.row-act.end{justify-content:flex-end}.row-act.spl{justify-content:space-between}
+.grid.gm{gap:var(--sp-md)}.grid.gl{gap:var(--sp-lg)}.grid.gx{gap:var(--sp-xl)}
+.nav.v{flex-direction:column;align-items:flex-start;border-bottom:0;padding-bottom:0}
+.sp2{display:grid;gap:var(--sp-lg);align-items:start}
+.sp2.r11{grid-template-columns:1fr 1fr}.sp2.r21{grid-template-columns:2fr 1fr}.sp2.r12{grid-template-columns:1fr 2fr}
+@media(max-width:768px){.sp2.s768{grid-template-columns:1fr}}
+@media(max-width:1024px){.sp2.s1024{grid-template-columns:1fr}}
+.pb{display:flex;flex-direction:column;gap:var(--sp-xs);width:100%;max-width:520px}
+.pb-top{display:flex;justify-content:space-between;gap:var(--sp-md);font-size:var(--fs-small)}
+.pb-track{height:8px;border-radius:var(--r-pill);background:var(--c-track);overflow:hidden}
+.pb-track i{display:block;height:100%;background:var(--c-primary);border-radius:var(--r-pill)}
+.pb-hint{font-size:var(--fs-label);color:var(--c-text-muted)}
+.bv{background:var(--c-surface);border:1px solid var(--c-line);border-radius:var(--r-md);padding:var(--sp-md);display:flex;flex-direction:column;gap:var(--sp-sm);max-width:68ch}
+.bv-src{display:flex;gap:var(--sp-sm);align-items:center;font-size:var(--fs-label);color:var(--c-text-muted)}
+.bv p{margin:0}
+.bv-t{align-self:flex-start;display:inline-flex;gap:var(--sp-sm);align-items:center;min-height:var(--target-min);padding:0 var(--sp-sm);margin-left:calc(-1*var(--sp-sm));border:0;background:none;color:var(--c-primary);font-weight:500;cursor:pointer;border-radius:var(--r-md)}
+.bv-t:hover{background:var(--c-primary-pale)}
+.bv-t .ic{transition:transform var(--motion-base) cubic-bezier(.2,.8,.2,1)}
+.bv-t[aria-expanded=true] .ic{transform:rotate(90deg)}
+.bv-full{border-top:1px solid var(--c-line);padding-top:var(--sp-sm);color:var(--c-text-primary)}
+@media(prefers-reduced-motion:reduce){.bv-t .ic{transition:none}}
+
+/* requisito: fila con riel de estado (no tarjeta) */
+.rq{position:relative;padding:var(--sp-md) var(--sp-md) var(--sp-md) var(--sp-lg);background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);display:flex;flex-direction:column;gap:var(--sp-xs)}
+.rq::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;border-radius:var(--r-md) 0 0 var(--r-md);background:var(--c-border)}
+.rq.cumple::before{background:var(--c-success)}.rq.no_cumple::before{background:var(--c-error)}
+.rq-top{display:flex;gap:var(--sp-sm);align-items:center;flex-wrap:wrap}
+.rq-top strong{font-size:var(--fs-body)}
+.rq p{margin:0}
+.st{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;font-size:var(--fs-small);line-height:var(--lh-small);padding:4px 10px;border-radius:var(--r-md);border:1px solid var(--c-border);background:var(--c-paper-muted);color:var(--c-text-primary)}
+.st.cumple{color:var(--c-success-text);border-color:var(--c-success-border);background:var(--c-success-pale);font-weight:500}
+.st.no_cumple{color:var(--c-error-text);border-color:var(--c-error-border);background:var(--c-error-pale);font-weight:500}
+details.ay>summary{cursor:pointer;color:var(--c-secondary);font-size:var(--fs-small);min-height:32px;display:flex;align-items:center}
+details.ay>div{font-size:var(--fs-small);color:var(--c-text-primary);padding:var(--sp-xs) 0}
+.rv{align-self:flex-start;min-height:var(--target-min);padding:0 var(--sp-md);border-radius:var(--r-md);border:1px solid var(--c-border);background:var(--c-background);cursor:pointer;font-size:var(--fs-small)}
+.rv[aria-pressed=true]{background:var(--c-surface);border-color:var(--c-success);color:var(--c-success);font-weight:600}
+
+/* selector de material */
+.mp{background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);overflow:hidden}
+.mp-h{padding:var(--sp-sm) var(--sp-md);font-size:var(--fs-small);font-weight:600;border-bottom:1px solid var(--c-border);background:var(--c-background)}
+.mt{display:grid;grid-template-columns:1fr auto;gap:var(--sp-sm);align-items:center;padding:var(--sp-sm) var(--sp-md);border-bottom:1px solid var(--c-border)}
+.mt:last-child{border-bottom:0}
+.mt.sel{background:var(--c-primary-pale)}
+.mt b{font-weight:600;font-size:var(--fs-small)}
+.mt small{display:block;color:var(--c-text-muted);font-size:var(--fs-label);line-height:var(--lh-label);margin-top:2px}
+.mt .nm{display:flex;gap:var(--sp-sm);align-items:center;flex-wrap:wrap}
+.mt .bt{min-height:var(--target-min);min-width:92px;padding:0 var(--sp-md);border-radius:var(--r-md);border:1px solid var(--c-primary);background:var(--c-surface);color:var(--c-primary);font-weight:600;cursor:pointer;font-size:var(--fs-small)}
+.mt .bt:hover{background:var(--c-background)}
+.mt .bt.on{background:var(--c-primary);color:var(--c-on-primary)}
+.mt .bt[disabled]{border-color:var(--c-border);color:var(--c-text-muted);background:var(--c-background);cursor:not-allowed}
+
+/* resumen de avance */
+.ps{display:flex;flex-direction:column;gap:var(--sp-sm);padding:var(--sp-md);background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);max-width:520px;width:100%}
+.ps p{margin:0}
+.ps-bar{display:flex;gap:var(--sp-xs)}
+.ps-bar i{flex:1;height:8px;border-radius:var(--r-pill);background:var(--c-track)}
+.ps-bar i.on{background:var(--c-primary)}
+.ps-l{display:flex;gap:var(--sp-sm);align-items:center}.ps-l .ic{color:var(--c-warning)}.ps-l.ok .ic{color:var(--c-success)}
+.ps ul{margin:0;padding-left:20px;font-size:var(--fs-small);color:var(--c-text-muted)}
+
+/* avisos de sistema */
+.notice{border-radius:var(--r-md);padding:var(--sp-md);border:1px solid;display:flex;flex-direction:column;gap:var(--sp-xs)}
+.notice>*{margin:0}
+.notice .nt{display:flex;gap:var(--sp-sm);align-items:center;font-weight:600}
+.notice.block{background:var(--c-warning-pale);border-color:var(--c-warning-border);color:var(--c-warning-text)}
+.notice.block ul{margin:var(--sp-xs) 0 0;padding-left:20px;font-size:var(--fs-small)}
+.notice.adapt{background:var(--c-info-pale);border-color:var(--c-info-border);color:var(--c-info-text)}
+.notice.kept{background:var(--c-success-pale);border-color:var(--c-success-border);color:var(--c-success-text)}
+.notice.undone{background:var(--c-paper-muted);border-color:var(--c-border);color:var(--c-text-primary)}
+.notice.err{background:var(--c-error-pale);border-color:var(--c-error-border);color:var(--c-error-text)}
+.notice.dsmsg ul{margin:var(--sp-xs) 0 0;padding-left:20px;font-size:var(--fs-small)}
+.notice .row-act{margin-top:var(--sp-xs)}
+.notice .ab{min-height:var(--target-min);font-size:var(--fs-small);padding:0 var(--sp-md)}
+.empty{color:var(--c-text-muted);font-size:var(--fs-small)}
+.busy{display:flex;align-items:center;gap:var(--sp-sm);padding:var(--sp-md);border:1px dashed var(--c-border);border-radius:var(--r-md);color:var(--c-text-muted);background:var(--c-surface)}
+.busy i{width:14px;height:14px;border-radius:50%;border:2px solid var(--c-border);border-top-color:var(--c-primary);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.busy i{animation:none}}
+
+
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<aside class="side" aria-label="Navegación de la documentación">
+  <h2>DS-01 Adaptivo + P2</h2>
+  <p class="ver">Documentación · versión de trabajo 3.1</p>
+  <nav id="nav"></nav>
+  <div class="ctrl">
+    <label>Resaltar quién decide<select id="focusSel"><option value="">Todas las propiedades</option><option>INVARIANT</option><option>CONSTRAINED</option><option>OPEN</option><option>SISTEMA</option></select></label>
+    <label><input type="checkbox" id="hideCode"> Ocultar bloques de código</label>
+  </div>
+</aside>
+<main id="main"><div class="wrap">
+
+<div class="hero">
+  <p style="margin:0 0 var(--sp-md);font-size:var(--fs-small)"><a href="./">← Volver al resumen del proyecto</a></p>
+  <h1>El prototipo y su sistema de diseño</h1>
+  <p>Documentación de un instrumento de investigación: una interfaz que un modelo de lenguaje genera y reorganiza mientras una persona prepara una entrega, dentro de un sistema de diseño que decide qué puede y qué no puede hacer.</p>
+  <div class="note" style="margin-top:var(--sp-md)"><strong>Actualización del 8 de octubre de 2026 (adiciones 3.2)</strong><p>Esta documentación describe la versión 3.1. Después de analizar 18 corridas cambié tres cosas: una adaptación solo se frena por errores nuevos (los heredados de la interfaz anterior quedan registrados aparte), una lista de materiales vacía se interpreta como «todos», y cada adaptación muestra el cambio real junto a lo que dice el modelo. Los resultados de esas corridas están en el resumen del proyecto.</p></div>
+  <div class="meta"><span class="chip">Sistema de diseño DS-01 Adaptivo 3.0.0</span><span class="chip">Adiciones de P2 3.1.0</span><span class="chip" id="chipTests"></span><span class="chip warn">Instrumento de investigación, no producto</span></div>
+</div>
+
+<!-- ═══════════════ PARTE A ═══════════════ -->
+<section class="doc" id="empieza"><h2>Empieza aquí</h2>
+<p class="lead">Tu primera corrida en cinco pasos, sin leer el resto de la documentación.</p>
+<ol>
+<li><strong>Enciende el servidor.</strong> En una terminal, dentro de la carpeta <code>p2_v2</code>, define tu clave (<code>$env:GEMINI_API_KEY="..."</code> en PowerShell) y ejecuta <code>python server.py</code>. Sin clave puedes usar el proveedor «Demo».</li>
+<li><strong>Abre la consola</strong> en <code>http://127.0.0.1:8787</code> y escribe en «Qué quiero observar» una frase concreta, antes de generar.</li>
+<li><strong>Genera.</strong> Elige el proveedor, deja la familiaridad en «baja» y pulsa «Generar corrida». Tarda alrededor de 30 a 45 segundos.</li>
+<li><strong>Observa.</strong> Revisa el panel «Corrida», pulsa «Abrir pantalla completa», adjunta materiales, intenta entregar con algo faltante y pide un cambio.</li>
+<li><strong>Interpreta.</strong> Vuelve a la consola, completa la ficha con lo que no preveías y lo que aprendiste, y descárgala.</li></ol>
+<div class="note"><strong>Si algo falla</strong><p>La corrida queda guardada igual, con el error. Una propuesta rechazada también es un hallazgo: no la borres.</p></div>
+<div class="tw"><table class="t"><tr><th>Si quieres…</th><th>Ve a</th></tr>
+<tr><td>Entender qué es y qué investiga</td><td><a href="#intro">Introducción y principios</a> y <a href="#marco">Marco de investigación</a></td></tr>
+<tr><td>Entender cómo se define y se descubre el rol de la diseñadora</td><td><a href="#intro">Introducción y principios</a> y <a href="#marco">Marco de investigación</a></td></tr>
+<tr><td>Planificar tus corridas</td><td><a href="#protocolo">Protocolo de corridas</a></td></tr>
+<tr><td>Interpretar los números de una corrida</td><td><a href="#corrida">Cómo leer una corrida</a></td></tr>
+<tr><td>Documentar una iteración</td><td><a href="#ficha">Ficha por iteración</a></td></tr>
+<tr><td>Cambiar una regla o un componente</td><td><a href="#integracion">Integración y operación</a></td></tr>
+<tr><td>Ver cómo es un componente</td><td><a href="#componentes">Catálogo de componentes</a></td></tr></table></div>
+</section>
+
+<section class="doc" id="intro"><h2>Introducción y principios</h2>
+<p class="lead">Qué es el prototipo, qué investiga y cómo se reparte el trabajo entre la diseñadora, el modelo, el sistema y la persona.</p>
+<h3 style="margin-top:0">En resumen: cómo funciona</h3>
+<ol>
+<li><strong>La diseñadora define</strong> el sistema de diseño, el caso y las condiciones de cada corrida.</li>
+<li><strong>El modelo de lenguaje propone</strong> una interfaz (una especificación en JSON) dentro de ese marco.</li>
+<li><strong>Un validador de código acepta o rechaza</strong> la propuesta. El modelo no se evalúa a sí mismo.</li>
+<li><strong>La persona usa</strong> la interfaz y puede pedir cambios: el modelo reorganiza, el sistema conserva su progreso y la persona mantiene o deshace.</li>
+<li><strong>Todo queda registrado.</strong> La diseñadora lo interpreta en la ficha y decide qué cambiar en la vuelta siguiente.</li></ol>
+<p>El prototipo P2 existe para responder una pregunta de diseño: <strong>¿qué conviene definir, delegar y dejar emerger cuando una interfaz se genera para cada persona, y qué cambia en su recorrido?</strong> No busca demostrar que una interfaz adaptada sea mejor. Busca que cada decisión de la diseñadora, de la IA y del sistema quede registrada para poder analizarla.</p>
+<div class="two"><div><h4>Qué es</h4><ul><li>Un caso de estudio simulado: preparar la entrega de un informe a partir de un brief, requisitos y materiales.</li><li>Un sistema de diseño con reglas que se comprueban en código.</li><li>Un registro completo de cada corrida, incluidas las que fallan.</li></ul></div>
+<div><h4>Qué no es</h4><ul><li>Una plataforma universitaria ni una copia de Canvas.</li><li>Una prueba de que la adaptación mejora la experiencia: eso requiere observar personas.</li><li>Un generador sin límites: lo que el modelo puede hacer lo acota el sistema.</li></ul></div></div>
+<h3>Principios</h3>
+<table class="t"><tr><th>Principio</th><th>Qué significa en el prototipo</th></tr>
+<tr><td>La IA propone, el sistema comprueba</td><td>El modelo escribe una especificación en JSON. Un validador de código la rechaza si rompe una regla. El modelo no se evalúa a sí mismo.</td></tr>
+<tr><td>Cada propiedad tiene a quién le corresponde</td><td>Todas las propiedades llevan una etiqueta: INVARIANT, CONSTRAINED, OPEN o SISTEMA. Si el modelo escribe lo que no le corresponde, el validador rechaza la propuesta.</td></tr>
+<tr><td>Se registra todo</td><td>El prompt exacto, la propuesta, los errores, las acciones bloqueadas y las decisiones de mantener o deshacer.</td></tr>
+<tr><td>Las métricas describen estructura</td><td>Cuántas pantallas o pasos hay no dice si la persona entiende. Eso solo se observa con personas.</td></tr></table>
+<h3>Quién decide qué en cada corrida</h3>
+<div class="tw"><table class="t"><tr><th>Quién</th><th>Qué hace</th><th>Límites</th></tr>
+<tr><td><strong>Diseñadora</strong></td><td>Define el sistema de diseño, las reglas, el caso y las condiciones de cada corrida (situación, intención, núcleo, libertad concedida). Decide qué cambiar en la vuelta siguiente.</td><td>No puede garantizar con texto una condición: lo que escribe en el formulario llega al modelo como instrucción, no como regla ejecutable.</td></tr>
+<tr><td><strong>IA (modelo de lenguaje)</strong></td><td>Propone la estructura de la interfaz, el recorrido, los textos y las ayudas. Reorganiza cuando la persona pide un cambio.</td><td>Puede proponer algo que no le corresponde. Si escribe lo que calcula el sistema (estado de un requisito, avance), lo que fija la diseñadora o usa componentes fuera del catálogo, el validador rechaza la propuesta.</td></tr>
+<tr><td><strong>Sistema (motor y validador)</strong></td><td>Calcula si un requisito cumple, ejecuta adjuntar y entregar, rechaza propuestas inválidas y conserva el progreso.</td><td>No juzga si una interfaz es clara o útil.</td></tr>
+<tr><td><strong>Persona</strong></td><td>Usa la interfaz, adjunta materiales, intenta entregar, pide cambios y decide mantenerlos o deshacerlos.</td><td>No cambia las reglas del sistema desde la vista de uso.</td></tr></table></div>
+<h3>Cómo se define el rol de la diseñadora</h3>
+<p>El rol no se define como un cargo, sino como tres tipos de decisión. Cada una deja evidencia en el prototipo.</p>
+<div class="tw"><table class="t"><tr><th>Qué hace</th><th>Qué significa</th><th>Dónde queda la evidencia</th></tr>
+<tr><td><strong>Define</strong></td><td>Fija lo que no se negocia: el sistema de diseño, las reglas esenciales (INVARIANT), el caso y el núcleo.</td><td>El sistema de diseño y el validador</td></tr>
+<tr><td><strong>Delega</strong></td><td>Deja que la IA elija de una lista (CONSTRAINED) o decida libremente (OPEN), según la libertad que concede.</td><td>El panel «Quién decidió qué»</td></tr>
+<tr><td><strong>Revisa</strong></td><td>Observa lo que pasó, lo interpreta y cambia una condición con su justificación.</td><td>La ficha por iteración y la vuelta 1</td></tr></table></div>
+<p>Las otras dos partes del flujo son el sistema, que calcula lo que a nadie le toca decidir (por ejemplo, si un requisito cumple), y la persona, que usa la interfaz y pide cambios.</p>
+<div class="note"><strong>Definición de trabajo</strong><p>En este proyecto, el trabajo de la diseñadora es diseñar las condiciones bajo las cuales una IA genera interfaces: qué fija, qué delega y qué revisa después de observar lo que ocurre.</p></div>
+<div class="note warn"><strong>Es una definición operativa, no general</strong><p>Vale para este caso. Lo que la respalda son las fichas y las vueltas: cada vez que cambias una condición porque observaste algo, muestras ese trabajo.</p></div>
+</section>
+
+<section class="doc" id="marco"><h2>Marco de investigación</h2>
+<p class="lead">Cómo generar, observar, interpretar y revisar produce conocimiento, y qué conocimiento es ese.</p>
+<p>El prototipo se plantea como investigación a través del diseño (<em>Research through Design</em>): se produce conocimiento construyendo un artefacto, observando lo que ocurre y documentando el proceso y las decisiones, de modo que otras personas puedan apoyarse en ello (Zimmerman, Forlizzi y Evenson, 2007). El prototipo no es el resultado: es el instrumento con el que se hace visible el trabajo de diseño.</p>
+<p>La idea de que quien diseña pasa de definir pantallas a definir el espacio de posibilidades se relaciona con el meta-diseño (Fischer y Giaccardi, 2006) y con lo que describen Lee (2025) y Ge et al. (2026) en contextos de interfaces generativas. Aplicarlo a la generación con modelos de lenguaje es una interpretación de ese marco, todavía por explorar.</p>
+<div class="tw"><table class="t"><tr><th>Momento del ciclo</th><th>Qué hace el prototipo</th><th>Dónde queda registrado</th></tr>
+<tr><td><strong>Generar</strong></td><td>Estableces condiciones y el modelo propone una interfaz.</td><td>El pack, el prompt exacto y la propuesta, en el archivo de la corrida.</td></tr>
+<tr><td><strong>Observar</strong></td><td>Usas la interfaz, el sistema rechaza o bloquea, pides cambios.</td><td>Acciones (incluidas las bloqueadas), adaptaciones y decisiones de mantener o deshacer.</td></tr>
+<tr><td><strong>Interpretar</strong></td><td>Separas lo que el sistema detectó de lo que tú no preveías.</td><td>La ficha por iteración.</td></tr>
+<tr><td><strong>Revisar</strong></td><td>Cambias una condición y justificas por qué, partiendo de lo observado.</td><td>La vuelta siguiente, con su justificación.</td></tr></table></div>
+<h3>Qué produce el prototipo y qué produces tú</h3>
+<p>El prototipo no produce por sí solo el conocimiento de la investigación: <strong>produce evidencia, y la interpretación es tuya</strong>. Para cada cosa que se busca saber, esta tabla indica qué aporta el prototipo y qué falta de la diseñadora.</p>
+<div class="tw"><table class="t"><tr><th>Lo que se busca saber</th><th>Qué hace el prototipo</th><th>Qué hace falta de ti</th></tr>
+<tr><td><strong>Qué decisiones conviene definir, delegar o revisar</strong></td><td>Cada propiedad lleva una etiqueta (INVARIANT, CONSTRAINED, OPEN, SISTEMA). El panel «Quién decidió qué» registra qué escribió la IA libremente y qué eligió de una lista. Al comparar A, B, C y D ves qué decisiones cambian cuando cambia una condición.</td><td>Juzgar cuáles conviene definir tú, delegar o revisar. El prototipo muestra lo que decidió el modelo, no lo que convenía.</td></tr>
+<tr><td><strong>Qué reglas son esenciales y cuáles incidentales</strong></td><td>El validador rechaza lo que rompe reglas y la consola agrupa los errores por regla. En la vuelta 1 cambias una regla y repites la corrida para ver qué cambia.</td><td>Clasificarlas como esencial, incidental o por decidir. La tabla «Razones de diseño» tiene una columna tuya para eso.</td></tr>
+<tr><td><strong>Qué condiciones permiten o impiden ciertas propuestas</strong></td><td>Guarda el prompt exacto de cada corrida. Entre A y B solo difiere una línea (la situación), así que una diferencia de resultado puede asociarse a esa condición. Las acciones bloqueadas y las adaptaciones no aplicables muestran qué se impide.</td><td>Interpretar la relación. Como el modelo varía entre generaciones, la repetición (A1 y A2) te dice cuánto pesa la condición frente a esa variación.</td></tr></table></div>
+<div class="two"><div class="note ok"><strong>Lo que permite el método</strong><p>Observar y documentar qué decisiones toma cada parte, qué reglas frenan al modelo y qué condiciones permiten o impiden ciertas propuestas, para que la diseñadora interprete cuáles conviene definir, delegar o revisar en este caso.</p></div>
+<div class="note warn"><strong>Lo que no permite</strong><p>Que una interfaz adaptada mejore la experiencia, ni que los hallazgos valgan para otros modelos o contextos. Eso requiere observar personas y comparar.</p></div></div>
+<h3>Cómo se descubre el rol de la diseñadora</h3>
+<p>El rol no se define de antemano: se descubre recorriendo este camino con evidencia propia.</p>
+<ol>
+<li><strong>Compara A con B, C y D.</strong> Mira qué decisiones cambian cuando cambia una sola condición (panel «Quién decidió qué» y tabla «Comparar seleccionadas»).</li>
+<li><strong>Compara A1 con A2.</strong> Mide cuánto varía el modelo consigo mismo, para no atribuir a una condición lo que es variación.</li>
+<li><strong>Mira qué rechazó el validador y qué bloqueó.</strong> Los errores agrupados por regla muestran qué reglas frenaron al modelo.</li>
+<li><strong>Clasifica cada hallazgo</strong> en la ficha y en «Razones de diseño»: esencial, incidental o por decidir.</li>
+<li><strong>En la vuelta 1, cambia una sola condición y repite.</strong> La diferencia muestra cuánto pesaba esa condición.</li>
+<li><strong>Escribe qué defines, qué delegas y qué revisas,</strong> con la evidencia de las fichas.</li></ol>
+<div class="note"><strong>Qué hay hoy</strong><p>Con las dos corridas reales disponibles hay un indicio: 12 de los 15 errores de la primera propuesta con el sistema v3 vienen de una sola regla (un requisito o un selector de material dentro de una tarjeta), lo que sugiere que es incidental. Es un indicio y no una conclusión: se vuelve evidencia comparable con las ocho corridas y la vuelta 1, y aun así vale para este caso y para un modelo.</p></div>
+</section>
+
+<section class="doc" id="flujo"><h2>El flujo del prototipo</h2>
+<p class="lead">Del formulario de condiciones a una interfaz que se reorganiza durante el uso.</p>
+<div class="flow">
+<div class="n"><b>1 · Diseñadora</b><span>Define condiciones en la consola.</span></div>
+<div class="n"><b>2 · Sistema de diseño</b><span>Catálogo, tokens y gobernanza.</span></div>
+<div class="n"><b>3 · Modelo</b><span>Propone la especificación (JSON).</span></div>
+<div class="n"><b>4 · Validador</b><span>Acepta o rechaza con motivos.</span></div>
+<div class="n"><b>5 · Persona</b><span>Usa, pide cambios, mantiene o deshace.</span></div></div>
+<div class="loop">Bucle de adaptación: la persona pide un cambio → el modelo recibe el pedido, la interfaz actual y el progreso → el validador revisa → la pantalla se reorganiza conservando el progreso → la persona mantiene o deshace.</div>
+<table class="t"><tr><th>Paso</th><th>Qué ocurre</th><th>Dónde está en el código</th></tr>
+<tr><td>1</td><td>La consola arma el <em>pack</em> con las condiciones de la corrida.</td><td><code>static/index.html</code></td></tr>
+<tr><td>2</td><td>El servidor construye el prompt con el catálogo, los datos fijos, las reglas del sistema y el pack. Es el prompt exacto que se guarda.</td><td><code>prompts.py</code></td></tr>
+<tr><td>3</td><td>Se llama al proveedor elegido (Gemini, Claude, API compatible con OpenAI o demo).</td><td><code>providers.py</code></td></tr>
+<tr><td>4</td><td>El validador revisa estructura, referencias, composición, gobernanza y que la entrega sea posible.</td><td><code>engine.py</code></td></tr>
+<tr><td>5</td><td>La interfaz se dibuja a pantalla completa usando solo los tokens del sistema.</td><td><code>static/index.html</code></td></tr>
+<tr><td>6</td><td>Cada acción de la persona la ejecuta el motor en el servidor y se guarda, incluso si se bloquea.</td><td><code>engine.py</code>, <code>server.py</code></td></tr>
+<tr><td>7</td><td>Un pedido de cambio genera una nueva propuesta, validada antes de aplicarse.</td><td><code>server.py</code></td></tr></table>
+<p>Una sola fuente de verdad: las reglas de entrega, la validación y la ejecución están en <code>engine.py</code>. El validador simula el recorrido con el mismo código que se usa al ejecutar, así lo que declara posible lo es.</p>
+</section>
+
+<section class="doc" id="uso"><h2>La consola y la vista de la persona</h2>
+<p class="lead">Qué hace cada campo y si llega al modelo o solo se registra.</p>
+<h3>Condiciones de la corrida</h3>
+<div class="tw"><table class="t"><tr><th>Campo</th><th>Qué es</th><th>¿Llega al modelo?</th><th>¿Se comprueba en código?</th></tr>
+<tr><td>Qué quiero observar</td><td>Pregunta o expectativa, escrita antes de generar.</td><td>No</td><td>No: queda registrada con fecha.</td></tr>
+<tr><td>Vuelta y justificación</td><td>Número de iteración y qué cambiaste y por qué (obligatorio desde la vuelta 1).</td><td>No</td><td>Se exige la justificación desde la vuelta 1.</td></tr>
+<tr><td>Proveedor</td><td>Modelo que responde.</td><td>—</td><td>—</td></tr>
+<tr><td>Familiaridad</td><td>Baja o alta, con una descripción fija de cada nivel.</td><td>Sí</td><td>No: es contexto, no regla.</td></tr>
+<tr><td>Situación de la persona</td><td>Texto libre sobre su circunstancia.</td><td>Sí, tal cual</td><td>No</td></tr>
+<tr><td>Intención</td><td>Qué debe lograr la persona.</td><td>Sí</td><td>No</td></tr>
+<tr><td>Núcleo no negociable</td><td>Reglas que escribes, una por línea.</td><td>Sí</td><td><strong>No.</strong> Es una instrucción. Solo las reglas programadas se comprueban.</td></tr>
+<tr><td>Libertad concedida / campo de decisión</td><td>Qué dejas explícitamente abierto y qué necesita decidir la persona.</td><td>Sí</td><td>No</td></tr></table></div>
+<div class="note warn"><strong>Escribir una regla no es garantizarla</strong><p>Si quieres que algo sea una condición verificable (por ejemplo, «un solo botón principal por pantalla»), tiene que programarse en el validador o en el sistema de diseño. El campo «núcleo» solo la pide por escrito.</p></div>
+<h3>La vista de la persona</h3>
+<ul><li><strong>Marco fijo:</strong> barra superior con curso, entrega y plazo, y la barra inferior para pedir cambios. No los decide el modelo.</li><li><strong>Contenido abierto:</strong> todo lo demás lo compone el modelo con el catálogo.</li><li><strong>Acciones:</strong> adjuntar y quitar materiales, marcar requisitos como revisados, navegar, entregar. Las ejecuta el motor; si no son válidas, se bloquean y quedan registradas.</li><li><strong>Pedir un cambio:</strong> texto libre o ejemplos. El resultado pasa por cuatro estados (ver «Adaptación durante el uso»).</li></ul>
+<h3>La regla del caso</h3>
+<div class="note"><strong>Regla de entrega (inventada para este caso)</strong><p id="reglaEntrega"></p></div>
+</section>
+
+<section class="doc" id="corrida"><h2>Cómo leer una corrida</h2>
+<p class="lead">Qué significa cada número del panel «Corrida» y qué no significa. Ejemplo: la primera corrida real con Gemini.</p>
+<h3>Qué mide cada indicador</h3>
+<div class="tw"><table class="t"><tr><th>Indicador</th><th>Qué dice</th><th>Qué no dice</th></tr>
+<tr><td>Validación sin errores / con errores</td><td>Si la propuesta respeta el sistema y permite entregar.</td><td>Si es buena. Una propuesta puede ser válida y confusa, o inválida y razonable.</td></tr>
+<tr><td>Estados (alcanzables)</td><td>Cuántas pantallas propone y cuántas se pueden alcanzar.</td><td>Que menos sea mejor.</td></tr>
+<tr><td>Pasos mínimos hasta entregar</td><td>El camino más corto que el validador encontró simulando el recorrido.</td><td>Cuántos pasos usará una persona real.</td></tr>
+<tr><td>Acciones / controles interactivos</td><td>Cuántos botones y controles hay.</td><td>Carga cognitiva.</td></tr>
+<tr><td>Requisitos con ayuda</td><td>Cuántos requisitos tienen explicación desplegable.</td><td>Que la ayuda sea clara.</td></tr>
+<tr><td>Primer contenido y orden de requisitos</td><td>Qué ve primero la persona.</td><td>Que lo encuentre.</td></tr>
+<tr><td>Quién decidió qué</td><td>Qué propiedades escribió libremente el modelo (OPEN) y cuáles eligió de una lista (CONSTRAINED).</td><td>Que cada decisión fuera acertada.</td></tr>
+<tr><td>Acciones bloqueadas</td><td>Intentos de la persona que el sistema impidió, con el motivo.</td><td>Un error de la persona: puede ser un error de la propuesta.</td></tr></table></div>
+<h3>Ejemplo real: la primera corrida con Gemini 2.5 Flash</h3>
+<p>Estos números se calculan en esta página a partir del archivo de la corrida, <code>data/ejemplos/corrida_real_gemini_1.json</code>. Esa corrida no incluye ninguna adaptación durante el uso, así que ilustra cómo leer una propuesta, no cómo se reorganiza una interfaz.</p>
+<div id="runEj"></div>
+<div class="note ok"><strong>Cómo se interpreta</strong><p>La propuesta era razonable desde el punto de vista del uso: resumen del brief y avance arriba, una ayuda por requisito, cada requisito junto a su selector y una confirmación en dos pasos. Pero el sistema la rechazó. Doce de los quince errores son una sola regla: el modelo puso el requisito y su selector dentro de una tarjeta, y el catálogo no lo permite. Esa regla es una decisión de diseño, no una verdad: es el tipo de hallazgo que justifica un cambio en la vuelta siguiente.</p></div>
+</section>
+
+<section class="doc" id="ficha"><h2>Ficha por iteración</h2>
+<p class="lead">El registro de investigación de cada corrida: lo que definiste, lo que delegaste y lo que aprendiste.</p>
+<p>La consola rellena sola lo que el sistema registró y deja para ti lo que no se puede medir. Se guarda en la corrida y se descarga como Markdown.</p>
+<h4>Cinco dimensiones para describir lo que decidió la IA</h4>
+<table class="t"><tr><th>Dimensión</th><th>Qué comparar</th></tr><tr><td>Contenido</td><td>Qué información prioriza, resume u omite.</td></tr><tr><td>Estructura</td><td>Cómo agrupa y jerarquiza.</td></tr><tr><td>Recorrido</td><td>Qué secuencia de acciones propone.</td></tr><tr><td>Interacción</td><td>Cómo permite completar la tarea.</td></tr><tr><td>Acompañamiento</td><td>Cuánta ayuda da y cuándo.</td></tr></table>
+<p>La consola mide parte de la estructura, el recorrido y la interacción. El contenido y el acompañamiento los lees tú en la pantalla.</p>
+<div class="tw"><table class="t"><tr><th>Campo</th><th>Quién lo completa</th><th>De dónde sale</th></tr>
+<tr><td>Pregunta</td><td>Automático</td><td>«Qué quiero observar», escrito antes de generar.</td></tr>
+<tr><td>Definí yo</td><td>Automático</td><td>Pack de condiciones y versión del sistema de diseño.</td></tr>
+<tr><td>Delegué / decidió la IA</td><td>Automático</td><td>Métricas de la propuesta y «Quién decidió qué».</td></tr>
+<tr><td>El sistema detectó</td><td>Automático</td><td>Registro técnico: errores agrupados por regla, acciones bloqueadas y adaptaciones no aplicables.</td></tr>
+<tr><td>Evidencia observada</td><td>Automático</td><td>Conteos de errores, acciones y adaptaciones.</td></tr>
+<tr><td>Qué aprendí</td><td>Tú</td><td>Lectura de la corrida.</td></tr>
+<tr><td>Lo que no preví</td><td>Tú</td><td>Tu interpretación: qué esperabas y qué pasó distinto.</td></tr>
+<tr><td>Qué cambió tras pedir el cambio</td><td>Tú</td><td>Tu lectura de la adaptación: qué cambió en el recorrido, qué se conservó.</td></tr>
+<tr><td>Cambio para la siguiente vuelta y por qué</td><td>Tú</td><td>La intervención de diseño que investigas.</td></tr></table></div>
+<div class="note"><strong>Registro técnico e interpretación no son lo mismo</strong><p>Lo que el sistema detecta (un error, un bloqueo) puede ser perfectamente esperado. Y una propuesta válida, sin ningún error, también puede sorprenderte. Por eso la ficha mantiene separadas las dos filas: el sistema registra, tú interpretas.</p></div>
+</section>
+
+<section class="doc" id="protocolo"><h2>Protocolo de corridas</h2>
+<p class="lead">Cómo generar evidencia comparable en poco tiempo.</p>
+<p>Fija el modelo, el sistema de diseño y el caso. Parte de una corrida base (A) y haz que cada otra cambie <strong>una sola cosa</strong> respecto de ella. Así puedes explorar la relación entre esa condición y los cambios que observas. Como el modelo también varía entre generaciones, cada corrida se repite. Cada situación debe ser una sola necesidad concreta.</p>
+<div class="tw"><table class="t"><tr><th>Corrida</th><th>Familiaridad</th><th>Situación</th><th>Repeticiones</th><th>Qué comparas</th></tr>
+<tr><td>A (base)</td><td>Baja</td><td>Sin situación</td><td>2</td><td>Punto de partida y variación entre repeticiones.</td></tr>
+<tr><td>B</td><td>Baja</td><td>«Tiene solo 10 minutos para entregar»</td><td>2</td><td>Efecto de una necesidad de tiempo (B contra A).</td></tr>
+<tr><td>C</td><td>Alta</td><td>Sin situación</td><td>2</td><td>Efecto de la familiaridad (C contra A).</td></tr>
+<tr><td>D</td><td>Baja</td><td>«No entiende qué significa que un material esté listo»</td><td>2</td><td>Efecto de una duda concreta (D contra A).</td></tr></table></div>
+<p>Evita mezclar en una misma situación el dispositivo, el tiempo y un error anterior: si cambian varias cosas a la vez, resulta difícil interpretar cuál pesó más.</p>
+<h4>Dos experimentos dentro de las mismas corridas</h4>
+<p><strong>Experimento 1, generación contextual:</strong> compara las propuestas iniciales de A, B, C y D. Investigas cómo interpreta el modelo cada condición. <strong>Experimento 2, adaptación durante el uso:</strong> a cada interfaz le pides lo mismo («guíame paso a paso») y comparas su antes y después. Analízalos por separado: rellena lo que generó la IA <em>antes</em> de usar la interfaz, para no confundir el efecto de la condición inicial con el del pedido.</p>
+<h4>Hipótesis previa</h4>
+<p>Escribe en «Qué quiero observar» lo que esperas de cada escenario (por ejemplo, en B: mayor priorización de lo necesario para entregar). Ese campo no llega al modelo: es tu criterio para interpretar después.</p>
+<h4>En cada corrida</h4>
+<ol><li>Escribe qué esperas antes de generar.</li><li>Abre la pantalla completa, adjunta materiales y intenta entregar con algo faltante.</li><li>Pide un cambio. Usa pedidos que obliguen a otra estructura: «guíame paso a paso», «explícame qué necesito entregar», «muéstrame lo que me falta».</li><li>Vuelve a la consola, completa la ficha y descarga el Markdown.</li></ol>
+<h4>Desde la vuelta 1</h4>
+<p>La vuelta 1 sale de los resultados de la vuelta 0, no se decide antes. Observas una decisión de la IA, juzgas si es deseable, problemática o ambigua, identificas qué condición la permitió, cambias una sola y repites el mismo escenario. Por ejemplo, si el sistema rechazó una agrupación razonable, puedes ampliar esa regla en <code>p2_additions.json</code> y repetir una corrida para ver qué cambia.</p>
+<div class="note warn"><strong>Qué no se puede concluir</strong><p>Con un modelo y pocas corridas se explora, no se generaliza. Ninguna métrica de la consola prueba que la experiencia mejore: para eso hay que observar personas usándola.</p></div>
+</section>
+
+<section class="doc" id="razones"><h2>Razones de diseño de las reglas</h2>
+<p class="lead">Qué regla limita al modelo, de dónde viene y por qué. La última columna es tuya.</p>
+<div class="note warn"><strong>Esta tabla está incompleta a propósito</strong><p>Solo tú puedes escribir por qué decidiste cada regla de tu sistema. La columna «Tu justificación» es editable y se guarda en este navegador. La clasificación («tipo») es una propuesta: tú decides si una regla es esencial, incidental o está por decidir.</p></div>
+<div class="tw"><table class="t" id="tbRazones"><tr><th>Regla</th><th>Origen</th><th>Tipo (propuesta)</th><th>Motivo conocido</th><th>Tu justificación</th></tr></table></div>
+<p>Esta es la secuencia que muestra tu rol: estableces una condición, observas sus consecuencias y decides cómo revisarla. Una regla incidental que descubres al observar (como la de las tarjetas) es un hallazgo, no un error.</p>
+</section>
+
+<section class="doc" id="evidencias"><h2>Evidencias por versión</h2>
+<p class="lead">Qué registro existe, con qué versión se obtuvo y qué respalda.</p>
+<p>Las corridas se hicieron con versiones distintas del prototipo. Para no mezclar resultados, cada evidencia se identifica por su corrida y sus versiones: sistema de diseño, adiciones de P2 y prompt.</p>
+<div class="tw"><table class="t" id="tbEvid"></table></div>
+</section>
+
+<!-- ═══════════════ PARTE B ═══════════════ -->
+<section class="doc" id="fundamentos"><h2>Fundamentos del sistema de diseño</h2>
+<p class="lead">Tokens que gobiernan el render. Todo lo que se ve sale de estas variables, que el servidor genera desde <code>design-system.json</code>.</p>
+<h3>Color</h3><div class="sw" id="swColors"></div>
+<h4>Contraste calculado</h4><div class="tw"><table class="t" id="tbContrast"></table></div>
+<p class="sub">El estado nunca se comunica solo con color: siempre va con ícono y texto.</p>
+<h3>Tipografía</h3><div id="typo"></div>
+<h3>Espaciado, radios y elevación</h3>
+<div class="two"><div><h4>Espaciado</h4><div id="spaces"></div></div><div><h4>Radios</h4><div class="swatch-t" id="radii"></div><h4>Elevación</h4><div class="swatch-t" id="shadows"></div></div></div>
+<h3>Foco y tamaño de los controles</h3>
+<p>Todo elemento interactivo mide al menos <code id="tmin"></code> y muestra un anillo de foco de <code id="fw"></code>. Prueba con Tab:</p>
+<div class="spec"><button class="btn">Botón con foco visible</button><button class="btn">Otro botón</button></div>
+<h3>Íconos</h3><p>Doce íconos con geometría fija en el sistema. El modelo solo puede elegir uno de esta lista.</p><div class="spec" id="icons"></div>
+</section>
+
+<section class="doc" id="componentes"><h2>Catálogo de componentes</h2>
+<p class="lead">Átomos, moléculas y organismos. Cada ficha muestra el componente funcionando, quién decide cada propiedad, sus reglas y el JSON que debe escribir el modelo.</p>
+<div class="note"><strong>Cómo leer cada ficha</strong><p>Las muestras se dibujan con el mismo código que usa el prototipo. Las etiquetas de la tabla indican quién decide cada propiedad: <span class="tag INVARIANT">INVARIANT</span> la fija la diseñadora, <span class="tag CONSTRAINED">CONSTRAINED</span> la IA elige de una lista, <span class="tag OPEN">OPEN</span> la decide la IA, <span class="tag SISTEMA">SISTEMA</span> la calcula el motor.</p></div>
+<h3 id="h-atomos">Átomos</h3><div id="atomos"></div>
+<h3 id="h-moleculas">Moléculas</h3><div id="moleculas"></div>
+<h3 id="h-organismos">Organismos</h3><div id="organismos"></div>
+<h3>Componentes del sistema que P2 no usa</h3>
+<div class="tw"><table class="t" id="tbExcl"></table></div>
+</section>
+
+<section class="doc" id="demos"><h2>Demos interactivas</h2>
+<p class="lead">Tres situaciones del prototipo que puedes probar aquí. Usan las reglas reales de entrega, simplificadas para la página.</p>
+<div class="demo"><h3 style="margin-top:0">La trampa del caso</h3><p>Cada requisito acepta ciertos tipos de material y exige que esté en estado «listo». Prueba adjuntar <code>Plan_semanas.xlsx</code> al plan: es del tipo correcto, pero está en borrador, así que no cumple. Luego prueba <code>Calendario_equipo.docx</code>.</p>
+<div class="live" id="demoTrampa"></div><button class="btn" id="resetTrampa">Reiniciar la demo</button></div>
+<div class="demo"><h3 style="margin-top:0">Los cuatro estados de una propuesta de cambio</h3><p>Cuando la persona pide un cambio, el aviso pasa por estos estados. Todos llevan ícono y texto.</p><div class="live" id="demoEstados"></div></div>
+<div class="demo"><h3 style="margin-top:0">El visor del brief</h3><p>El resumen nunca reemplaza el acceso al texto completo, que lo pone el sistema desde los datos.</p><div class="live" id="demoBrief"></div></div>
+</section>
+
+<section class="doc" id="pantallas"><h2>Marco fijo, contenido abierto y pantallas de referencia</h2>
+<p class="lead">Qué decide el sistema y qué compone el modelo.</p>
+<table class="t"><tr><th>Parte</th><th>Quién la decide</th></tr>
+<tr><td>Barra superior (curso, entrega, plazo) y acciones «Reiniciar» y «Volver a la consola»</td><td>Marco fijo</td></tr>
+<tr><td>Barra inferior para pedir cambios</td><td>Marco fijo</td></tr>
+<tr><td>Avisos del sistema (entrega bloqueada, propuesta de cambio)</td><td>Marco fijo</td></tr>
+<tr><td>Todo el contenido entre la barra superior y la inferior</td><td>El modelo, con el catálogo</td></tr></table>
+<p>El sistema no tiene plantillas ni reglas por tipo de persona: se eliminaron en esta versión para que la adaptación responda a la tarea y al pedido, no a una clasificación previa.</p>
+<h3>Especificación de referencia como recorrido</h3>
+<p>Escrita a mano, no proviene de ningún modelo. Muestra tres pantallas posibles con un recorrido válido.</p>
+<div id="screens"></div>
+</section>
+
+<!-- ═══════════════ PARTE C ═══════════════ -->
+<section class="doc" id="adaptacion"><h2>Adaptación durante el uso</h2>
+<p class="lead">Cómo la interfaz se reorganiza sin que la persona pierda lo que hizo.</p>
+<ol><li>La persona escribe un pedido («necesito entender mejor el brief») o usa un ejemplo.</li><li>El servidor envía al modelo las condiciones, la interfaz actual, el progreso y el pedido.</li><li>El modelo devuelve una especificación completa nueva, un <code>estado_equivalente</code> (dónde debe quedar la persona) y un <code>resumen_cambio</code>.</li><li>El validador revisa la propuesta. Si es inválida, <strong>no se aplica</strong>, la persona sigue como estaba y el intento queda guardado.</li><li>Si es válida, se aplica conservando el progreso (adjuntos y revisiones pertenecen al sistema, no a la interfaz).</li><li>La persona mantiene o deshace. Ambas decisiones se registran.</li></ol>
+<table class="t"><tr><th>Estado de la propuesta</th><th>Qué ve la persona</th><th>Qué se registra</th></tr>
+<tr><td>Pendiente</td><td>Aviso con «Mantener este cambio» y «Deshacer»</td><td>Decisión vacía</td></tr>
+<tr><td>Mantenido</td><td>Aviso de confirmación, con «Deshacer» disponible</td><td>aceptada</td></tr>
+<tr><td>Deshecho</td><td>Vuelve a la pantalla anterior, en el mismo punto</td><td>deshecha</td></tr>
+<tr><td>Error</td><td>La propuesta no pasó la validación; todo sigue igual</td><td>Intento con los problemas encontrados</td></tr></table>
+<h3>Evidencia real de una adaptación (versión anterior del prototipo)</h3>
+<p>Esta es la única adaptación real registrada hasta ahora. Se hizo con una <strong>versión anterior</strong> (sistema de diseño 1.0.0, adiciones 2.0.0), por lo que no prueba nada sobre la versión actual. El registro completo está en <code>data/ejemplos/corrida_anterior_con_adaptacion.json</code>.</p>
+<div id="adEj"></div>
+<div class="note warn"><strong>Un límite que conviene recordar</strong><p>Si pides un cambio sobre algo que ya está resuelto, el modelo puede hacer un cambio mínimo. En esa corrida, al pedir «quiero ver todo junto» sobre una propuesta que ya era una sola pantalla, Gemini casi no cambió nada. Usa pedidos que obliguen a otra estructura.</p></div>
+</section>
+
+<section class="doc" id="validador"><h2>Reglas del validador</h2>
+<p class="lead">Lo que el sistema rechaza, con el mensaje que muestra.</p>
+<div class="tw"><table class="t" id="tbRules"></table></div>
+<p>Cada regla tiene una prueba automática. Una auditoría adicional detecta propiedades que el modelo puede escribir (OPEN o CONSTRAINED) pero que ni el renderer ni el validador leen. Es una revisión limitada: comprueba que la propiedad se use, no que cada valor produzca el efecto correcto en pantalla. Eso se revisa mirando las corridas.</p>
+</section>
+
+<section class="doc" id="integracion"><h2>Integración y operación</h2>
+<p class="lead">Cómo ejecutar el prototipo, qué archivos importan y cómo extenderlo.</p>
+<h3>Ejecutar</h3>
+<pre class="code">cd p2_v2
+$env:GEMINI_API_KEY="tu_clave"     # PowerShell; en macOS/Linux: export GEMINI_API_KEY=...
+python server.py
+# abre http://127.0.0.1:8787   (el proveedor «Demo» funciona sin clave)</pre>
+<div class="tw"><table class="t"><tr><th>Proveedor</th><th>Variables de entorno</th><th>Modelo por defecto</th></tr>
+<tr><td>Gemini</td><td><code>GEMINI_API_KEY</code>, opcional <code>GEMINI_MODEL</code></td><td><code>gemini-2.5-flash</code></td></tr>
+<tr><td>Claude</td><td><code>ANTHROPIC_API_KEY</code>, opcional <code>CLAUDE_MODEL</code></td><td><code>claude-sonnet-5-5</code></td></tr>
+<tr><td>OpenAI o compatible</td><td><code>OPENAI_API_KEY</code>, <code>OPENAI_MODEL</code>, opcional <code>OPENAI_BASE_URL</code></td><td>Sin valor por defecto</td></tr>
+<tr><td>Demo</td><td>Ninguna</td><td>Especificaciones escritas a mano</td></tr></table></div>
+<p>Las claves viven solo en el proceso del servidor: no se guardan en disco ni llegan al navegador. Comprueba que los nombres de modelo existan en tu cuenta.</p>
+<h3>Archivos</h3>
+<div class="tw"><table class="t"><tr><th>Archivo</th><th>Para qué sirve</th></tr>
+<tr><td><code>design_system/design-system.json</code></td><td>Tokens, gramática atómica y gobernanza. Si tienes el JSON original de Figma Make, reemplázalo.</td></tr>
+<tr><td><code>design_system/p2_additions.json</code></td><td>Moléculas propias de P2, contenido admitido por cada componente y exclusiones con su motivo.</td></tr>
+<tr><td><code>data/datos_fijos.json</code></td><td>El caso: brief, requisitos, materiales y regla de entrega.</td></tr>
+<tr><td><code>engine.py</code></td><td>Catálogo, validador, reglas de entrega y ejecución de acciones.</td></tr>
+<tr><td><code>prompts.py</code></td><td>Construcción del prompt de generación y de adaptación.</td></tr>
+<tr><td><code>providers.py</code></td><td>Proveedores de modelos intercambiables.</td></tr>
+<tr><td><code>server.py</code></td><td>Servidor local, registro de corridas y endpoints.</td></tr>
+<tr><td><code>static/index.html</code></td><td>Consola y vista de la persona.</td></tr>
+<tr><td><code>data/runs/</code></td><td>Una corrida por archivo, con todo el registro.</td></tr>
+<tr><td><code>tests/</code></td><td>Pruebas del motor, del servidor y auditoría de parámetros.</td></tr></table></div>
+<h3>Cómo agregar o cambiar un componente</h3>
+<ol><li>Agrégalo a la gramática de <code>design-system.json</code> con sus hijos permitidos y reglas, o ajusta su regla de composición.</li><li>Declara la gobernanza de cada propiedad en el bloque <code>governance</code>.</li><li>Describe su contenido en <code>contenido_p2</code> de <code>p2_additions.json</code>.</li><li>Dibújalo en el renderer (<code>nodo()</code> en <code>static/index.html</code>).</li><li>Corre las pruebas: la auditoría falla si una propiedad que el modelo puede escribir no tiene efecto.</li></ol>
+<h3>Cambiar una regla como intervención de diseño</h3>
+<p>Para cambiar una regla de composición, edita <code>extiende_hijos</code> en <code>p2_additions.json</code> (por ejemplo, permitir <code>requirement-item</code> dentro de <code>card</code>). Cada corrida guarda la versión de las adiciones, así puedes comparar corridas antes y después del cambio.</p>
+<h3>Endpoints del servidor</h3>
+<div class="tw"><table class="t"><tr><th>Ruta</th><th>Qué hace</th></tr>
+<tr><td><code>GET /api/contexto</code></td><td>Tokens, datos, proveedores y gobernanza.</td></tr>
+<tr><td><code>POST /api/generar</code></td><td>Arma el prompt, llama al modelo, valida y guarda la corrida.</td></tr>
+<tr><td><code>POST /api/evento</code></td><td>Ejecuta una acción de la persona y la registra.</td></tr>
+<tr><td><code>POST /api/adaptar</code></td><td>Pide un cambio al modelo, valida y guarda la propuesta.</td></tr>
+<tr><td><code>POST /api/adaptar/resolver</code></td><td>Registra si se mantuvo o se deshizo.</td></tr>
+<tr><td><code>POST /api/nota</code>, <code>POST /api/ficha</code></td><td>Guardan notas y la ficha de iteración.</td></tr>
+<tr><td><code>GET /api/runs</code>, <code>GET /api/export</code></td><td>Listan y exportan las corridas.</td></tr></table></div>
+</section>
+
+<section class="doc" id="cambios"><h2>Cambios, estado y límites</h2>
+<p class="lead">Qué cambió entre versiones, qué está comprobado y qué falta.</p>
+<h3>Historial</h3>
+<div class="tw"><table class="t"><tr><th>Versión</th><th>Qué cambió</th></tr>
+<tr><td>P2 inicial (DS-01 v1)</td><td>Caso de inscripción de electivos; 6 componentes; validador que dejaba pasar botones sin destino, referencias inexistentes y propuestas sin confirmación.</td></tr>
+<tr><td>Caso de entrega + motor único</td><td>Caso de preparar una entrega con requisitos y materiales; motor que valida y ejecuta con las mismas reglas; proveedores intercambiables; registro por corrida.</td></tr>
+<tr><td>DS-01 Adaptivo 3.0 + gobernanza</td><td>Identidad y tokens de Figma Make; etiquetas de gobernanza que el validador hace cumplir; componentes nuevos (visor del brief, barra de progreso, diseño dividido, ícono); variante <code>accent</code> pasa a <code>info</code>; cuatro estados de la propuesta de cambio; se eliminan plantillas y reglas por perfil.</td></tr>
+<tr><td>Adiciones 3.1</td><td>Campo «situación de la persona»; prompt más claro sobre confirmación y salida; el validador rechaza una confirmación con botón de entrega; errores agrupados por regla; los parámetros sin efecto reciben efecto y una auditoría lo vigila; ficha por iteración.</td></tr></table></div>
+<h3>Comprobado y no comprobado</h3>
+<div class="two"><div class="note ok"><strong>Comprobado</strong><p>Pruebas automáticas del motor, del servidor y de la auditoría de parámetros. Prueba en un navegador real del flujo completo con el proveedor demo. Una corrida real con Gemini 2.5 Flash (ver «Evidencias por versión»). Esa corrida no tiene adaptaciones registradas: todavía no aporta evidencia de reorganización durante el uso.</p></div>
+<div class="note warn"><strong>No comprobado</strong><p>Generaciones repetidas con el prompt actual. Una adaptación real con su antes y su después en la versión actual. Corridas con otros modelos. Sesiones con personas. El efecto de la adaptación sobre la comprensión del recorrido.</p></div></div>
+<h3>Limitaciones</h3>
+<ul><li>El JSON del sistema se reconstruyó desde la documentación de Figma Make; el original puede diferir en detalles.</li><li>Los textos que escribe el modelo no se verifican contra el brief.</li><li>El título <code>xl</code> mide 52 px y en pantallas de tarea resulta grande: el renderer lo limita según el ancho.</li><li>Las reglas del caso (borrador no cumple, un material por requisito) son inventadas y condicionan lo que el modelo propone.</li><li>El caso está inspirado en entregas de plataformas como Canvas, pero no las simula.</li></ul>
+</section>
+
+<section class="doc" id="referencias"><h2>Referencias</h2>
+<ul>
+<li>Benyon, D. (2014). <em>Designing Interactive Systems</em> (3.ª ed.). Pearson.</li>
+<li>Design Tokens Community Group (2025). <em>Design Tokens Format Module 2025.10</em>. W3C Community Group Report.</li>
+<li>Fischer, G., y Giaccardi, E. (2006). Meta-design: A framework for the future of end-user development. En H. Lieberman, F. Paternò y V. Wulf (Eds.), <em>End User Development</em> (pp. 427–457). Springer.</li>
+<li>Frost, B. (2016). <em>Atomic Design</em>. atomicdesign.bradfrost.com</li>
+<li>Ge, Y. et al. (2026). GenFaceUI: Meta-Design of Generative Personalized Facial Expression Interfaces for Intelligent Agents. <em>CHI 2026</em>.</li>
+<li>Lee, K. (2025). Towards a Working Definition of Designing Generative User Interfaces. <em>DIS 2025 Companion</em>.</li>
+<li>Sawicki, B. et al. (2026). Qualitative Evaluation of LLM-Designed GUI. arXiv:2601.22759.</li>
+<li>Zimmerman, J., Forlizzi, J., y Evenson, S. (2007). Research through design as a method for interaction design research in HCI. <em>CHI ’07</em> (pp. 493–502). ACM.</li></ul>
+<div class="note warn"><strong>Verifica antes de citar</strong><p>Las referencias de Zimmerman et al. y de Fischer y Giaccardi las agregué de memoria; confirma sus datos (páginas, editores) antes de usarlas en tu memoria.</p></div>
+</section>
+
+</div></main>
+
+<script>
+"use strict";
+const DS={"system_id": "ds-01", "system_name": "DS-01 Adaptivo", "version": "3.0.0", "description": "DS-01 Adaptivo v3: identidad azul del sistema hecho en Figma Make + moléculas de P2. Reconstruido desde la documentación (tools/build_ds_v3.py).", "last_updated": "2026-10", "author": "DS-01 Research Team", "metadata": {"design_philosophy": "Atomic Design + Token-based constraints", "ai_compatibility": true, "adaptive_capabilities": ["real-time composition", "context-aware layouts", "cognitive-load optimization"], "target_contexts": ["dashboard", "onboarding", "task-focused", "data-entry", "monitoring"], "accessibility_level": "WCAG 2.1 AA"}, "token_set": {"colors": {"primary": {"value": "#1B4D7A", "usage": "Acción principal · 8.79:1 con blanco"}, "secondary": {"value": "#123858"}, "accent": {"value": "#8FC6E8"}, "background": {"value": "#F5F6F3"}, "surface": {"value": "#FFFFFF"}, "text_primary": {"value": "#17201F"}, "text_muted": {"value": "#687370", "usage": "Apoyo · 4.91:1 sobre surface"}, "border": {"value": "#C7D0CB"}, "on_primary": {"value": "#FFFFFF"}, "focus": {"value": "#5B66D6", "usage": "Anillo de foco, nunca se quita"}, "success": {"value": "#23805D"}, "success_pale": {"value": "#E3F2E9"}, "success_border": {"value": "#8BC6B0"}, "success_text": {"value": "#14563E"}, "warning": {"value": "#A95F0D"}, "warning_pale": {"value": "#FFF1D6"}, "warning_border": {"value": "#DBA34B"}, "warning_text": {"value": "#74400A"}, "error": {"value": "#B43A3A"}, "error_pale": {"value": "#FBE8E6"}, "error_border": {"value": "#DA8E88"}, "error_text": {"value": "#842828"}, "info": {"value": "#3562A6"}, "info_pale": {"value": "#E7EFFB"}, "info_border": {"value": "#91ADD6"}, "info_text": {"value": "#234A84"}, "primary_pale": {"value": "#E5EEF7"}, "track": {"value": "#DFE5E1"}, "line": {"value": "#DCE2DE"}, "paper_muted": {"value": "#EDF1ED"}}, "typography": {"font_family": "\"IBM Plex Sans\", system-ui, sans-serif", "font_mono": "\"IBM Plex Mono\", ui-monospace, monospace", "scale": {"heading_xl": {"size": "52px", "line_height": "56px"}, "heading_lg": {"size": "32px", "line_height": "38px"}, "heading_md": {"size": "22px", "line_height": "28px"}, "body": {"size": "16px", "line_height": "24px"}, "small": {"size": "14px", "line_height": "20px"}, "label": {"size": "13px", "line_height": "16px"}}, "weights": {"regular": 400, "medium": 500, "semibold": 600}, "tracking": {"display": {"value": "-0.035em"}}}, "spacing": {"xs": {"value": "4px"}, "sm": {"value": "8px"}, "md": {"value": "16px"}, "lg": {"value": "24px"}, "xl": {"value": "32px"}}, "radius": {"sm": {"value": "6px"}, "md": {"value": "10px"}, "lg": {"value": "16px"}, "pill": {"value": "999px"}}, "shadows": {"sm": {"value": "0 2px 8px rgba(23, 32, 31, 0.06)"}, "md": {"value": "0 8px 24px rgba(23, 32, 31, 0.08)"}, "lg": {"value": "0 18px 52px rgba(23, 32, 31, 0.15)"}}, "focus": {"ring": {"value": "0 0 0 3px var(--c-focus)"}, "width": {"value": "3px"}, "offset": {"value": "2px"}}, "target": {"min": {"value": "44px"}}, "motion": {"fast": {"value": "120ms"}, "base": {"value": "200ms"}, "slow": {"value": "320ms"}}, "icons": {"check": "M5 12l4 4L19 6", "alert": "M12 3 22 21H2L12 3Zm0 6v5m0 3v.1", "info": "M12 11v6m0-10v.1M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z", "clock": "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v5l3 2", "file": "M6 2h8l4 4v16H6V2Zm8 0v5h5", "link": "M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2", "upload": "M12 16V4m-5 5 5-5 5 5M4 16v5h16v-5", "lock": "M6 10h12v11H6V10Zm3 0V7a3 3 0 0 1 6 0v3", "chevron": "m9 6 6 6-6 6", "arrow": "M5 12h14m-5-5 5 5-5 5", "help": "M9.5 9a2.5 2.5 0 1 1 3.2 2.4c-.7.3-.7.9-.7 1.6m0 4v.1M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z", "undo": "m9 7-5 5 5 5m-5-5h10a5 5 0 0 1 5 5"}}, "atomic_grammar": {"atoms": [{"id": "btn-primary", "name": "Botón primario", "category": "interactive", "properties": {"label": {"type": "string", "required": true}, "onClick": {"type": "function", "required": true}, "disabled": {"type": "boolean", "default": false}, "icon": {"type": "icon", "required": false, "position": "left|right"}}, "tokens": ["colors.primary", "typography.scale.body", "spacing.md", "spacing.sm", "radius.md"], "states": ["default", "hover", "active", "disabled"], "accessibility": {"role": "button", "keyboard": true, "min_target_size": "44px"}, "cognitive_weight": "high", "usage_context": ["primary actions", "form submission", "critical workflows"]}, {"id": "btn-secondary", "name": "Botón secundario", "category": "interactive", "properties": {"label": {"type": "string", "required": true}, "onClick": {"type": "function", "required": true}, "disabled": {"type": "boolean", "default": false}, "icon": {"type": "icon", "required": false, "position": "left|right"}}, "tokens": ["colors.secondary", "typography.scale.body", "spacing.md", "spacing.sm", "radius.md"], "states": ["default", "hover", "active", "disabled"], "accessibility": {"role": "button", "keyboard": true, "min_target_size": "44px"}, "cognitive_weight": "medium", "usage_context": ["secondary actions", "cancel actions", "navigation"]}, {"id": "btn-icon", "name": "Botón de icono", "category": "interactive", "properties": {"icon": {"type": "icon", "required": true}, "onClick": {"type": "function", "required": true}, "ariaLabel": {"type": "string", "required": true}, "variant": {"type": "enum", "values": ["primary", "secondary", "ghost"], "default": "ghost"}}, "tokens": ["colors.primary", "spacing.sm", "radius.md"], "states": ["default", "hover", "active", "disabled"], "accessibility": {"role": "button", "keyboard": true, "requires_aria_label": true, "min_target_size": "44px"}, "cognitive_weight": "low", "usage_context": ["toolbars", "quick actions", "compact interfaces"]}, {"id": "text-input", "name": "Campo de texto", "category": "input", "properties": {"label": {"type": "string", "required": true}, "placeholder": {"type": "string", "required": false}, "value": {"type": "string", "required": false}, "onChange": {"type": "function", "required": true}, "required": {"type": "boolean", "default": false}, "error": {"type": "string", "required": false}, "helperText": {"type": "string", "required": false}}, "tokens": ["colors.border", "colors.surface", "typography.scale.body", "typography.scale.label", "spacing.md", "spacing.sm", "radius.md"], "states": ["default", "focus", "error", "disabled"], "accessibility": {"role": "textbox", "keyboard": true, "label_association": "required"}, "cognitive_weight": "medium", "usage_context": ["forms", "data entry", "search"]}, {"id": "checkbox", "name": "Casilla de verificación", "category": "input", "properties": {"label": {"type": "string", "required": true}, "checked": {"type": "boolean", "required": false}, "onChange": {"type": "function", "required": true}, "disabled": {"type": "boolean", "default": false}}, "tokens": ["colors.primary", "colors.border", "typography.scale.body", "spacing.xs", "radius.sm"], "states": ["unchecked", "checked", "indeterminate", "disabled"], "accessibility": {"role": "checkbox", "keyboard": true, "min_target_size": "44px"}, "cognitive_weight": "low", "usage_context": ["forms", "settings", "multi-select"]}, {"id": "toggle", "name": "Interruptor", "category": "input", "properties": {"label": {"type": "string", "required": true}, "checked": {"type": "boolean", "required": false}, "onChange": {"type": "function", "required": true}, "disabled": {"type": "boolean", "default": false}}, "tokens": ["colors.primary", "colors.border", "typography.scale.body", "spacing.xs", "radius.pill"], "states": ["off", "on", "disabled"], "accessibility": {"role": "switch", "keyboard": true, "min_target_size": "44px"}, "cognitive_weight": "low", "usage_context": ["settings", "preferences", "feature toggles"]}, {"id": "heading", "name": "Encabezado", "category": "typography", "properties": {"text": {"type": "string", "required": true}, "level": {"type": "enum", "values": ["xl", "lg", "md"], "required": true}, "align": {"type": "enum", "values": ["left", "center", "right"], "default": "left"}}, "allowed_levels": ["xl", "lg", "md"], "tokens": ["colors.text_primary", "typography.scale.heading_xl", "typography.scale.heading_lg", "typography.scale.heading_md", "typography.weights.bold", "typography.weights.medium"], "accessibility": {"semantic_html": "h1|h2|h3", "hierarchy_required": true}, "cognitive_weight": "high", "usage_context": ["page titles", "section headers", "card titles"]}, {"id": "text-body", "name": "Texto de cuerpo", "category": "typography", "properties": {"text": {"type": "string", "required": true}, "align": {"type": "enum", "values": ["left", "center", "right"], "default": "left"}}, "tokens": ["colors.text_primary", "typography.scale.body", "typography.weights.regular"], "accessibility": {"semantic_html": "p|span"}, "cognitive_weight": "medium", "usage_context": ["descriptions", "content", "instructions"]}, {"id": "text-muted", "name": "Texto secundario", "category": "typography", "properties": {"text": {"type": "string", "required": true}, "align": {"type": "enum", "values": ["left", "center", "right"], "default": "left"}}, "tokens": ["colors.text_muted", "typography.scale.small", "typography.weights.regular"], "accessibility": {"semantic_html": "p|span|small"}, "cognitive_weight": "low", "usage_context": ["helper text", "metadata", "timestamps"]}, {"id": "badge", "name": "Etiqueta de estado", "category": "feedback", "properties": {"label": {"type": "string", "required": true}, "variant": {"type": "enum", "values": ["success", "warning", "error", "info", "neutral"], "required": true}}, "allowed_variants": ["success", "warning", "error", "info", "neutral"], "tokens": ["colors.success", "colors.warning", "colors.accent", "colors.error", "typography.scale.label", "typography.weights.medium", "spacing.xs", "radius.pill"], "accessibility": {"role": "status", "aria_live": "polite"}, "cognitive_weight": "medium", "usage_context": ["status indicators", "tags", "categories"]}, {"id": "divider", "name": "Separador", "category": "layout", "properties": {"orientation": {"type": "enum", "values": ["horizontal", "vertical"], "default": "horizontal"}}, "tokens": ["colors.border"], "accessibility": {"role": "separator", "decorative": true}, "cognitive_weight": "minimal", "usage_context": ["section separation", "visual grouping"]}, {"id": "icon", "name": "Icono", "category": "visual", "properties": {"name": {"type": "string", "required": true}, "size": {"type": "enum", "values": [16, 20, 24], "required": true}, "color": {"type": "enum", "values": ["text_primary", "text_muted", "primary", "secondary", "accent", "success", "warning", "error"], "default": "text_primary"}, "ariaLabel": {"type": "string", "required": false}}, "allowed_sizes": [16, 20, 24], "allowed_colors": ["text_primary", "text_muted", "primary", "secondary", "accent", "success", "warning", "error"], "icon_set": "token_set.icons", "tokens": ["colors.text_primary", "colors.primary", "colors.secondary", "colors.accent", "colors.success", "colors.warning", "colors.error"], "accessibility": {"decorative_by_default": true, "aria_hidden_when_decorative": true}, "cognitive_weight": "low", "usage_context": ["visual enhancement", "navigation", "actions", "status indicators"], "allowed_names": ["check", "alert", "info", "clock", "file", "link", "upload", "lock", "chevron", "arrow", "help", "undo"]}, {"id": "spinner", "name": "Indicador de carga", "category": "feedback", "properties": {"size": {"type": "enum", "values": ["sm", "md", "lg"], "default": "md"}, "color": {"type": "enum", "values": ["primary", "secondary", "accent"], "default": "primary"}}, "tokens": ["colors.primary", "colors.secondary", "colors.accent"], "accessibility": {"role": "status", "aria_live": "polite", "aria_label": "Loading"}, "cognitive_weight": "medium", "usage_context": ["loading states", "async operations"]}, {"id": "progress-bar", "name": "Barra de progreso", "category": "feedback", "properties": {"label": {"type": "string", "required": true}, "value": {"type": "number", "source": "system"}}, "allowed_detail_levels": ["label", "label_value", "label_value_hint"], "accessibility": {"role": "progressbar", "label_required": true, "completion_not_only_color": true}, "cognitive_weight": "low"}], "molecules": [{"id": "card", "name": "Tarjeta de contenido", "category": "container", "allowed_children": ["heading", "text-body", "text-muted", "badge", "btn-primary", "btn-secondary", "divider"], "max_children": 8, "composition_rules": {"max_buttons": 2, "no_nested_card": true}, "tokens": ["colors.surface", "colors.border", "spacing.lg", "radius.lg", "shadows.md"], "states": ["default", "hover", "selected"], "accessibility": {"role": "article|region", "focusable": "when_interactive"}, "cognitive_weight": "medium", "usage_context": ["content presentation", "feature highlights", "list items"], "allowed_density": ["comfortable", "compact"], "allowed_emphasis": ["default", "raised"]}, {"id": "form-field", "name": "Grupo de formulario", "category": "input", "allowed_children": ["heading", "text-muted", "text-input", "checkbox", "toggle", "btn-primary", "btn-secondary"], "max_children": 8, "composition_rules": {"heading_recommended": true, "helper_text_recommended": true, "max_inputs": 6, "recommended_hierarchy": ["heading", "text-muted", "input-text*", "checkbox|toggle*", "btn-primary"]}, "tokens": ["colors.surface", "spacing.lg", "spacing.md"], "accessibility": {"role": "group", "fieldset_when_related": true}, "cognitive_weight": "high", "usage_context": ["forms", "data entry", "settings"]}, {"id": "stat-block", "name": "Bloque de métrica", "category": "display", "allowed_children": ["heading", "text-muted", "badge", "icon"], "max_children": 4, "composition_rules": {"max_badges": 1, "recommended_hierarchy": ["icon", "value", "label", "badge"]}, "tokens": ["colors.surface", "colors.border", "spacing.md", "radius.md", "shadows.sm"], "accessibility": {"role": "status|region", "aria_live": "polite"}, "cognitive_weight": "low", "usage_context": ["dashboards", "metrics", "KPIs"]}, {"id": "action-row", "name": "Fila de acciones", "category": "interactive", "allowed_children": ["btn-primary", "btn-secondary", "text-muted"], "max_children": 4, "composition_rules": {"max_primary_buttons": 1, "max_actions": 3}, "tokens": ["spacing.sm", "spacing.md"], "accessibility": {"role": "group", "keyboard_navigation": "required"}, "cognitive_weight": "medium", "usage_context": ["forms", "dialogs", "cards"], "allowed_alignment": ["start", "end", "split"]}, {"id": "input-group", "name": "Grupo de input con icono", "category": "input", "allowed_children": ["text-input", "icon", "btn-icon"], "max_children": 3, "composition_rules": {"input_required": true, "icon_position": "left|right", "button_position": "right"}, "tokens": ["colors.border", "colors.surface", "spacing.md", "radius.md"], "accessibility": {"role": "group", "combined_focus": true}, "cognitive_weight": "medium", "usage_context": ["search", "filters", "enhanced inputs"]}, {"id": "alert", "name": "Alerta", "category": "feedback", "allowed_children": ["heading", "text-body", "text-muted", "icon"], "max_children": 4, "composition_rules": {"icon_recommended": true, "heading_or_text_required": true, "variant_required": true}, "allowed_variants": ["success", "warning", "error", "info"], "tokens": ["colors.success", "colors.warning", "colors.error", "colors.secondary", "spacing.md", "radius.md"], "accessibility": {"role": "alert", "aria_live": "assertive"}, "cognitive_weight": "high", "usage_context": ["notifications", "feedback", "warnings"]}, {"id": "brief-viewer", "name": "Visor del brief", "category": "disclosure", "allowed_children": [], "max_children": 0, "usage_context": ["Muestra un resumen breve del brief que la persona puede abrir para leer el texto completo. El resumen nunca reemplaza el acceso al texto completo; el texto completo lo pone el sistema desde los datos."], "allowed_detail_levels": ["brief", "expanded"], "accessibility": {"role": "group", "disclosure": "aria-expanded", "control_has_text_and_chevron": true}, "cognitive_weight": "medium"}], "organisms": [{"id": "header-section", "name": "Sección de cabecera", "category": "layout", "allowed_children": ["heading", "text-body", "text-muted", "badge", "action-row", "brief-viewer"], "max_children": 6, "composition_rules": {"heading_required": true, "max_action_rows": 1}, "tokens": ["colors.background", "colors.border", "spacing.xl", "spacing.md"], "accessibility": {"role": "banner|header", "landmark": true}, "cognitive_weight": "high", "usage_context": ["page headers", "section introductions"], "allowed_detail_levels": ["title_only", "title_support", "title_support_actions"]}, {"id": "content-grid", "name": "Grilla de contenido", "category": "layout", "allowed_children": ["card", "stat-block", "alert"], "min_children": 1, "max_children": 12, "layout_options": ["1-col", "2-col", "3-col", "4-col"], "composition_rules": {"responsive_breakpoints": {"mobile": "1-col", "tablet": "2-col", "desktop": "3-col|4-col"}, "max_cards_recommended": 6, "max_stat_blocks_recommended": 4}, "tokens": ["spacing.lg", "spacing.md"], "accessibility": {"role": "region", "grid_semantics": "when_data_table"}, "cognitive_weight": "variable", "usage_context": ["dashboards", "galleries", "feature grids"], "allowed_gap": ["md", "lg", "xl"]}, {"id": "form-section", "name": "Sección de formulario", "category": "input", "allowed_children": ["heading", "text-muted", "form-field", "action-row", "alert"], "max_children": 6, "composition_rules": {"heading_recommended": true, "helper_text_recommended": true, "action_row_required": true, "max_form_groups": 3, "recommended_hierarchy": ["heading", "text-muted", "form-group*", "alert", "action-row"]}, "tokens": ["colors.background", "colors.surface", "spacing.xl", "spacing.lg"], "accessibility": {"role": "form", "landmark": true, "validation_required": true}, "cognitive_weight": "high", "usage_context": ["forms", "data entry", "settings", "wizards"]}, {"id": "navigation-bar", "name": "Barra de navegación", "category": "navigation", "allowed_children": ["btn-secondary", "text-body"], "max_children": 8, "composition_rules": {"max_primary_items": 5, "overflow_handling": "dropdown|more_menu", "responsive_collapse": "required"}, "tokens": ["colors.surface", "colors.border", "spacing.md", "spacing.sm", "shadows.sm"], "accessibility": {"role": "navigation", "landmark": true, "keyboard_navigation": "required", "current_page_indication": "required"}, "cognitive_weight": "medium", "usage_context": ["app navigation", "tabs", "menu"], "allowed_orientation": ["horizontal", "vertical"]}, {"id": "data-table", "name": "Tabla de datos", "category": "display", "allowed_children": ["heading", "text-body", "text-muted", "badge", "btn-icon", "checkbox"], "composition_rules": {"max_columns_recommended": 8, "pagination_required_when": "rows > 20", "sorting_recommended": true, "selection_optional": true}, "tokens": ["colors.surface", "colors.border", "spacing.md", "spacing.sm"], "accessibility": {"role": "table", "headers_required": true, "caption_recommended": true, "keyboard_navigation": "required"}, "cognitive_weight": "high", "usage_context": ["data display", "lists", "reports"]}, {"id": "split-layout", "name": "Diseño dividido", "category": "layout", "allowed_children": ["card", "stat-block", "alert", "heading", "text-body", "text-muted"], "min_children": 2, "max_children": 2, "allowed_ratio": ["1:1", "2:1", "1:2"], "allowed_stack_at": ["768px", "1024px"], "composition_rules": {"exactly_two_regions": true, "no_nested_split": true}, "accessibility": {"role": "group", "reading_order": "same as visual"}, "cognitive_weight": "medium"}], "templates": []}, "composition_constraints": {"global_rules": ["Maximum 3 levels of nesting (organism > molecule > atom)", "Color contrast must meet WCAG 2.2 AA (4.5:1 for text)", "Interactive elements minimum size: 44x44px", "Focus indicators (3px) required for all interactive elements", "Heading hierarchy must be logical (no skipped levels)", "State is never communicated by color alone: icon + text + shape"]}, "governance": {"_leyenda": {"INVARIANT": "La fija la diseñadora", "CONSTRAINED": "Opción que la IA elige de una lista", "OPEN": "La decide la IA", "SISTEMA": "La calcula el motor"}, "heading": {"text": "OPEN", "level": "CONSTRAINED", "semantic_rank": "INVARIANT"}, "text-body": {"text": "OPEN"}, "text-muted": {"text": "OPEN"}, "badge": {"text": "OPEN", "variant": "CONSTRAINED", "icon": "INVARIANT", "shape": "INVARIANT"}, "btn-primary": {"label": "OPEN", "accion": "OPEN", "disabled": "SISTEMA"}, "btn-secondary": {"label": "OPEN", "accion": "OPEN", "disabled": "SISTEMA"}, "icon": {"name": "CONSTRAINED", "size": "CONSTRAINED", "meaning": "OPEN", "path": "INVARIANT"}, "divider": {"orientation": "CONSTRAINED"}, "progress-bar": {"label": "OPEN", "value": "SISTEMA", "max": "INVARIANT", "detail_level": "CONSTRAINED"}, "requirement-item": {"requisito_id": "OPEN", "nombre": "SISTEMA", "descripcion": "SISTEMA", "estado": "SISTEMA", "mostrar_descripcion": "CONSTRAINED", "ayuda": "OPEN", "permitir_marcar_revisado": "CONSTRAINED"}, "material-picker": {"requisito_id": "OPEN", "material_ids": "OPEN", "compatibilidad": "SISTEMA"}, "progress-summary": {"mostrar_pendientes": "CONSTRAINED", "conteo": "SISTEMA", "pendientes": "SISTEMA", "entregable": "SISTEMA"}, "brief-viewer": {"summary": "OPEN", "full_text": "SISTEMA", "detail_level": "CONSTRAINED", "disclosure_semantics": "INVARIANT"}, "alert": {"variant": "CONSTRAINED", "title": "OPEN", "message": "OPEN", "collapsible": "CONSTRAINED", "summary": "OPEN", "icon": "INVARIANT"}, "card": {"density": "CONSTRAINED", "emphasis": "CONSTRAINED"}, "action-row": {"alignment": "CONSTRAINED"}, "stat-block": {"value": "OPEN", "label": "OPEN"}, "header-section": {"detail_level": "CONSTRAINED"}, "content-grid": {"layout": "CONSTRAINED", "gap": "CONSTRAINED"}, "navigation-bar": {"orientation": "CONSTRAINED"}, "split-layout": {"ratio": "CONSTRAINED", "stack_at": "CONSTRAINED"}}}, CAT={"btn-primary": {"id": "btn-primary", "nivel": "atom", "origen": "ds-01", "name": "Botón primario", "uso": ["primary actions", "form submission", "critical workflows"], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {}, "reglas": {}, "contenido": {"label": "string (requerido), verbo primero", "accion": "{tipo:'navegar'|'entregar', hacia:'id_de_estado'} (requerido)"}}, "btn-secondary": {"id": "btn-secondary", "nivel": "atom", "origen": "ds-01", "name": "Botón secundario", "uso": ["secondary actions", "cancel actions", "navigation"], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {}, "reglas": {}, "contenido": {"label": "string (requerido), verbo primero", "accion": "{tipo:'navegar'|'entregar', hacia:'id_de_estado'} (requerido)"}}, "heading": {"id": "heading", "nivel": "atom", "origen": "ds-01", "name": "Encabezado", "uso": ["page titles", "section headers", "card titles"], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {"level": ["lg", "md", "xl"], "align": ["center", "left", "right"]}, "reglas": {}, "contenido": {"text": "string (requerido)", "level": "xl | lg | md"}}, "text-body": {"id": "text-body", "nivel": "atom", "origen": "ds-01", "name": "Texto de cuerpo", "uso": ["descriptions", "content", "instructions"], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {"align": ["center", "left", "right"]}, "reglas": {}, "contenido": {"text": "string (requerido)"}}, "text-muted": {"id": "text-muted", "nivel": "atom", "origen": "ds-01", "name": "Texto secundario", "uso": ["helper text", "metadata", "timestamps"], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {"align": ["center", "left", "right"]}, "reglas": {}, "contenido": {"text": "string (requerido)"}}, "badge": {"id": "badge", "nivel": "atom", "origen": "ds-01", "name": "Etiqueta de estado", "uso": ["status indicators", "tags", "categories"], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {"variant": ["error", "info", "neutral", "success", "warning"]}, "reglas": {}, "contenido": {"text": "string (requerido)", "variant": "success | warning | error | info | neutral"}}, "divider": {"id": "divider", "nivel": "atom", "origen": "ds-01", "name": "Separador", "uso": ["section separation", "visual grouping"], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {"orientation": ["horizontal", "vertical"]}, "reglas": {}, "contenido": {"orientation": "horizontal | vertical"}}, "icon": {"id": "icon", "nivel": "atom", "origen": "ds-01", "name": "Icono", "uso": ["visual enhancement", "navigation", "actions", "status indicators"], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {"size": ["16", "20", "24"], "color": ["accent", "error", "primary", "secondary", "success", "text_muted", "text_primary", "warning"]}, "reglas": {}, "contenido": {"name": "uno de los 12 del set: check, alert, info, clock, file, link, upload, lock, chevron, arrow, help, undo", "size": "16 | 20 | 24", "meaning": "nombre accesible si no va con texto visible"}}, "progress-bar": {"id": "progress-bar", "nivel": "atom", "origen": "ds-01", "name": "Barra de progreso", "uso": [], "hijos": null, "max_hijos": null, "min_hijos": null, "enums": {"detail_level": ["label", "label_value", "label_value_hint"]}, "reglas": {}, "contenido": {"label": "string (requerido): qué está avanzando", "detail_level": "label | label_value | label_value_hint"}}, "card": {"id": "card", "nivel": "molecule", "origen": "ds-01", "name": "Tarjeta de contenido", "uso": ["content presentation", "feature highlights", "list items"], "hijos": ["badge", "btn-primary", "btn-secondary", "divider", "heading", "progress-bar", "text-body", "text-muted"], "max_hijos": 8, "min_hijos": null, "enums": {"density": ["comfortable", "compact"], "emphasis": ["default", "raised"]}, "reglas": {"max_buttons": 2, "no_nested_card": true}, "contenido": {"density": "comfortable | compact", "emphasis": "default | raised"}}, "stat-block": {"id": "stat-block", "nivel": "molecule", "origen": "ds-01", "name": "Bloque de métrica", "uso": ["dashboards", "metrics", "KPIs"], "hijos": ["badge", "heading", "icon", "text-muted"], "max_hijos": 4, "min_hijos": null, "enums": {}, "reglas": {"max_badges": 1, "recommended_hierarchy": ["icon", "value", "label", "badge"]}, "contenido": {"value": "string: la cifra o dato destacado", "label": "string: qué significa"}}, "action-row": {"id": "action-row", "nivel": "molecule", "origen": "ds-01", "name": "Fila de acciones", "uso": ["forms", "dialogs", "cards"], "hijos": ["btn-primary", "btn-secondary", "text-muted"], "max_hijos": 4, "min_hijos": null, "enums": {"alignment": ["end", "split", "start"]}, "reglas": {"max_primary_buttons": 1, "max_actions": 3}, "contenido": {"alignment": "start | end | split"}}, "alert": {"id": "alert", "nivel": "molecule", "origen": "ds-01", "name": "Alerta", "uso": ["notifications", "feedback", "warnings"], "hijos": ["heading", "icon", "text-body", "text-muted"], "max_hijos": 4, "min_hijos": null, "enums": {"variant": ["error", "info", "success", "warning"]}, "reglas": {"icon_recommended": true, "heading_or_text_required": true, "variant_required": true}, "contenido": {"variant": "info | success | warning | error", "title": "string", "message": "string", "collapsible": "boolean: si true se muestra plegada", "summary": "string: título visible cuando está plegada (requerido si collapsible)"}}, "brief-viewer": {"id": "brief-viewer", "nivel": "molecule", "origen": "ds-01", "name": "Visor del brief", "uso": ["Muestra un resumen breve del brief que la persona puede abrir para leer el texto completo. El resumen nunca reemplaza el acceso al texto completo; el texto completo lo pone el sistema desde los datos."], "hijos": [], "max_hijos": 0, "min_hijos": null, "enums": {"detail_level": ["brief", "expanded"]}, "reglas": {}, "contenido": {"summary": "string (requerido): resumen breve escrito por ti", "detail_level": "brief | expanded (expanded lo muestra abierto)"}}, "header-section": {"id": "header-section", "nivel": "organism", "origen": "ds-01", "name": "Sección de cabecera", "uso": ["page headers", "section introductions"], "hijos": ["action-row", "badge", "brief-viewer", "heading", "progress-bar", "progress-summary", "text-body", "text-muted"], "max_hijos": 6, "min_hijos": null, "enums": {"detail_level": ["title_only", "title_support", "title_support_actions"]}, "reglas": {"heading_required": true, "max_action_rows": 1}, "contenido": {"detail_level": "title_only (solo título y etiqueta) | title_support (título, apoyo, brief, avance) | title_support_actions (además, acciones)"}}, "content-grid": {"id": "content-grid", "nivel": "organism", "origen": "ds-01", "name": "Grilla de contenido", "uso": ["dashboards", "galleries", "feature grids"], "hijos": ["alert", "brief-viewer", "card", "material-picker", "progress-summary", "requirement-item", "stat-block"], "max_hijos": 12, "min_hijos": 1, "enums": {"gap": ["lg", "md", "xl"], "layout": ["1-col", "2-col", "3-col", "4-col"]}, "reglas": {"responsive_breakpoints": {"mobile": "1-col", "tablet": "2-col", "desktop": "3-col|4-col"}, "max_cards_recommended": 6, "max_stat_blocks_recommended": 4}, "contenido": {"layout": "1-col | 2-col | 3-col | 4-col", "gap": "md | lg | xl"}}, "navigation-bar": {"id": "navigation-bar", "nivel": "organism", "origen": "ds-01", "name": "Barra de navegación", "uso": ["app navigation", "tabs", "menu"], "hijos": ["btn-secondary", "text-body"], "max_hijos": 8, "min_hijos": null, "enums": {"orientation": ["horizontal", "vertical"]}, "reglas": {"max_primary_items": 5, "overflow_handling": "dropdown|more_menu", "responsive_collapse": "required"}, "contenido": {"orientation": "horizontal | vertical"}}, "split-layout": {"id": "split-layout", "nivel": "organism", "origen": "ds-01", "name": "Diseño dividido", "uso": [], "hijos": ["alert", "brief-viewer", "card", "heading", "material-picker", "progress-summary", "requirement-item", "stat-block", "text-body", "text-muted"], "max_hijos": 2, "min_hijos": 2, "enums": {"ratio": ["1:1", "1:2", "2:1"], "stack_at": ["1024px", "768px"]}, "reglas": {"exactly_two_regions": true, "no_nested_split": true}, "contenido": {"ratio": "1:1 | 2:1 | 1:2", "stack_at": "768px | 1024px"}}, "requirement-item": {"id": "requirement-item", "nivel": "molecule", "origen": "p2", "name": "Requisito de la entrega", "uso": ["Muestra un requisito de los datos fijos con su estado actual (falta material / cumple / no cumple) y el material adjunto. El nombre, la descripción y el estado los escribe el sistema desde los datos: no los repitas."], "hijos": [], "max_hijos": 0, "min_hijos": null, "enums": {}, "reglas": {}, "contenido": {"requisito_id": "id de un requisito de los datos fijos (requerido)", "mostrar_descripcion": "true | false (por defecto true)", "ayuda": "string opcional: explicación que la persona puede abrir (se muestra plegada)", "permitir_marcar_revisado": "true | false: agrega «Marcar como revisado»"}}, "material-picker": {"id": "material-picker", "nivel": "molecule", "origen": "p2", "name": "Selector de material", "uso": ["Permite adjuntar o quitar materiales para un requisito. Lista materiales de los datos fijos con su tipo y estado; el sistema ejecuta el adjuntar/quitar y comprueba la compatibilidad."], "hijos": [], "max_hijos": 0, "min_hijos": null, "enums": {}, "reglas": {}, "contenido": {"requisito_id": "id del requisito al que se adjunta (requerido)", "material_ids": "lista opcional de ids de materiales a ofrecer (por defecto, todos)"}}, "progress-summary": {"id": "progress-summary", "nivel": "molecule", "origen": "p2", "name": "Resumen de avance", "uso": ["Muestra cuántos requisitos obligatorios están cubiertos y cuáles faltan. Lo calcula el sistema."], "hijos": [], "max_hijos": 0, "min_hijos": null, "enums": {}, "reglas": {}, "contenido": {"mostrar_pendientes": "true | false (por defecto true)"}}}, GOB={"heading": {"text": "OPEN", "level": "CONSTRAINED", "semantic_rank": "INVARIANT"}, "text-body": {"text": "OPEN"}, "text-muted": {"text": "OPEN"}, "badge": {"text": "OPEN", "variant": "CONSTRAINED", "icon": "INVARIANT", "shape": "INVARIANT"}, "btn-primary": {"label": "OPEN", "accion": "OPEN", "disabled": "SISTEMA"}, "btn-secondary": {"label": "OPEN", "accion": "OPEN", "disabled": "SISTEMA"}, "icon": {"name": "CONSTRAINED", "size": "CONSTRAINED", "meaning": "OPEN", "path": "INVARIANT"}, "divider": {"orientation": "CONSTRAINED"}, "progress-bar": {"label": "OPEN", "value": "SISTEMA", "max": "INVARIANT", "detail_level": "CONSTRAINED"}, "requirement-item": {"requisito_id": "OPEN", "nombre": "SISTEMA", "descripcion": "SISTEMA", "estado": "SISTEMA", "mostrar_descripcion": "CONSTRAINED", "ayuda": "OPEN", "permitir_marcar_revisado": "CONSTRAINED"}, "material-picker": {"requisito_id": "OPEN", "material_ids": "OPEN", "compatibilidad": "SISTEMA"}, "progress-summary": {"mostrar_pendientes": "CONSTRAINED", "conteo": "SISTEMA", "pendientes": "SISTEMA", "entregable": "SISTEMA"}, "brief-viewer": {"summary": "OPEN", "full_text": "SISTEMA", "detail_level": "CONSTRAINED", "disclosure_semantics": "INVARIANT"}, "alert": {"variant": "CONSTRAINED", "title": "OPEN", "message": "OPEN", "collapsible": "CONSTRAINED", "summary": "OPEN", "icon": "INVARIANT"}, "card": {"density": "CONSTRAINED", "emphasis": "CONSTRAINED"}, "action-row": {"alignment": "CONSTRAINED"}, "stat-block": {"value": "OPEN", "label": "OPEN"}, "header-section": {"detail_level": "CONSTRAINED"}, "content-grid": {"layout": "CONSTRAINED", "gap": "CONSTRAINED"}, "navigation-bar": {"orientation": "CONSTRAINED"}, "split-layout": {"ratio": "CONSTRAINED", "stack_at": "CONSTRAINED"}}, EXCL={"text-input": "No hay formularios de texto en esta tarea.", "form-field": "No hay formularios de texto en esta tarea.", "form-section": "Contenedor de formularios; sin formularios en esta tarea.", "selection-card": "La selección de materiales la hace material-picker, con reglas reales.", "data-table": "Requiere un esquema de columnas que P2 no define.", "global-navigation": "El marco de la pantalla es fijo; el modelo decide solo el contenido.", "button": "Se usan btn-primary y btn-secondary, que exigen acción.", "btn-icon": "btn-secondary siempre lleva texto: no se permite solo icono.", "checkbox": "Sin efecto propio; la revisión de un requisito se hace desde requirement-item.", "toggle": "Control sin efecto sobre la tarea.", "spinner": "No hay procesos asíncronos dentro del recorrido.", "input-group": "No hay formularios de texto en esta tarea."}, DATOS={"tarea": "Preparar la entrega del informe de avance de un curso, a partir de un brief, sus requisitos y los materiales disponibles.", "brief": {"curso": "Taller de Proyecto", "entrega": "Informe de avance 2", "plazo": "viernes 10 de octubre, 23:59", "descripcion": "Informe breve que explica el problema, muestra la evidencia reunida y define el plan de las próximas dos semanas.", "texto_completo": "Informe breve que explica el problema, muestra la evidencia reunida y define el plan de las próximas dos semanas. Se entrega en la plataforma hasta el viernes 10 de octubre a las 23:59. Tiene tres partes obligatorias (planteamiento del problema, evidencia de la investigación y plan de las próximas dos semanas) y una opcional (bitácora de proceso)."}, "requisitos": [{"id": "R1", "nombre": "Planteamiento del problema", "descripcion": "Una página que explique el problema y a quién afecta.", "obligatorio": true, "acepta": ["documento"]}, {"id": "R2", "nombre": "Evidencia de la investigación", "descripcion": "Entrevistas, fuentes o registros de observación que respalden el problema.", "obligatorio": true, "acepta": ["documento", "imagenes"]}, {"id": "R3", "nombre": "Plan de las próximas dos semanas", "descripcion": "Calendario con actividades y responsables.", "obligatorio": true, "acepta": ["documento", "planilla"]}, {"id": "R4", "nombre": "Bitácora de proceso", "descripcion": "Registro breve de las decisiones tomadas hasta ahora.", "obligatorio": false, "acepta": ["documento"]}], "materiales": [{"id": "M1", "nombre": "Problema_v3.docx", "tipo": "documento", "estado": "listo", "detalle": "Documento de 1 página, revisado por el equipo."}, {"id": "M2", "nombre": "Entrevistas_resumen.pdf", "tipo": "documento", "estado": "listo", "detalle": "Resumen de 5 entrevistas."}, {"id": "M3", "nombre": "Fotos_observacion.zip", "tipo": "imagenes", "estado": "listo", "detalle": "24 fotografías de observación en terreno."}, {"id": "M4", "nombre": "Plan_semanas.xlsx", "tipo": "planilla", "estado": "borrador", "detalle": "Faltan los responsables de cada actividad."}, {"id": "M5", "nombre": "Calendario_equipo.docx", "tipo": "documento", "estado": "listo", "detalle": "Calendario con actividades y responsables."}, {"id": "M6", "nombre": "Bitacora_semanas1-3.docx", "tipo": "documento", "estado": "listo", "detalle": "Registro de decisiones de las semanas 1 a 3."}], "regla_de_entrega": "La entrega solo se puede concretar si cada requisito obligatorio tiene adjunto un material de un tipo que ese requisito acepta y que esté en estado 'listo'. Un material en 'borrador' se puede adjuntar, pero no cumple el requisito. Un mismo material solo puede cubrir un requisito."}, ICONS={"check": "M5 12l4 4L19 6", "alert": "M12 3 22 21H2L12 3Zm0 6v5m0 3v.1", "info": "M12 11v6m0-10v.1M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z", "clock": "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 4v5l3 2", "file": "M6 2h8l4 4v16H6V2Zm8 0v5h5", "link": "M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2", "upload": "M12 16V4m-5 5 5-5 5 5M4 16v5h16v-5", "lock": "M6 10h12v11H6V10Zm3 0V7a3 3 0 0 1 6 0v3", "chevron": "m9 6 6 6-6 6", "arrow": "M5 12h14m-5-5 5 5-5 5", "help": "M9.5 9a2.5 2.5 0 1 1 3.2 2.4c-.7.3-.7.9-.7 1.6m0 4v.1M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z", "undo": "m9 7-5 5 5 5m-5-5h10a5 5 0 0 1 5 5"}, EJ={"heading": {"nodos": [{"atom_id": "heading", "content": {"text": "Informe de avance 2", "level": "xl"}}, {"atom_id": "heading", "content": {"text": "Requisitos de la entrega", "level": "lg"}}, {"atom_id": "heading", "content": {"text": "Planteamiento del problema", "level": "md"}}], "estado": {}}, "text-body": {"nodos": [{"atom_id": "text-body", "content": {"text": "Explica el problema y a quién afecta, en una página."}}], "estado": {}}, "text-muted": {"nodos": [{"atom_id": "text-muted", "content": {"text": "Plazo: viernes 10 de octubre, 23:59"}}], "estado": {}}, "badge": {"nodos": [{"atom_id": "badge", "content": {"text": "Listo", "variant": "success"}}, {"atom_id": "badge", "content": {"text": "Borrador", "variant": "warning"}}, {"atom_id": "badge", "content": {"text": "Sin adjuntar", "variant": "error"}}, {"atom_id": "badge", "content": {"text": "Nuevo", "variant": "info"}}, {"atom_id": "badge", "content": {"text": "Opcional", "variant": "neutral"}}], "estado": {}}, "icon": {"nodos": [{"atom_id": "icon", "content": {"name": "check", "size": 24, "meaning": "Cumple"}}, {"atom_id": "icon", "content": {"name": "alert", "size": 24, "meaning": "Atención"}}, {"atom_id": "icon", "content": {"name": "upload", "size": 24, "meaning": "Subir un archivo"}}, {"atom_id": "icon", "content": {"name": "help", "size": 24, "meaning": "Ayuda"}}], "estado": {}}, "divider": {"nodos": [{"atom_id": "text-muted", "content": {"text": "Antes"}}, {"atom_id": "divider", "content": {"orientation": "vertical"}}, {"atom_id": "text-muted", "content": {"text": "Después"}}, {"atom_id": "divider", "content": {"orientation": "horizontal"}}], "estado": {}}, "btn-primary": {"nodos": [{"atom_id": "btn-primary", "content": {"label": "Revisar y entregar", "accion": {"tipo": "navegar", "hacia": "inicio"}}}], "estado": {}}, "btn-secondary": {"nodos": [{"atom_id": "btn-secondary", "content": {"label": "Volver a los materiales", "accion": {"tipo": "navegar", "hacia": "inicio"}}}], "estado": {}}, "progress-bar": {"nodos": [{"atom_id": "progress-bar", "content": {"label": "Requisitos cubiertos", "detail_level": "label"}}, {"atom_id": "progress-bar", "content": {"label": "Requisitos cubiertos", "detail_level": "label_value"}}, {"atom_id": "progress-bar", "content": {"label": "Requisitos cubiertos", "detail_level": "label_value_hint"}}], "estado": {"R1": "M1", "R2": "M2"}}, "card": {"nodos": [{"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "raised"}, "children": [{"atom_id": "heading", "content": {"text": "Evidencia de la investigación", "level": "md"}}, {"atom_id": "text-body", "content": {"text": "Entrevistas, fuentes o registros de observación."}}, {"atom_id": "badge", "content": {"text": "Obligatorio", "variant": "info"}}, {"atom_id": "btn-secondary", "content": {"label": "Ver ejemplos", "accion": {"tipo": "navegar", "hacia": "inicio"}}}]}], "estado": {}}, "stat-block": {"nodos": [{"molecule_id": "stat-block", "content": {"value": "2 de 3", "label": "requisitos cubiertos"}}, {"molecule_id": "stat-block", "content": {"value": "4", "label": "materiales listos"}}], "estado": {}}, "action-row": {"nodos": [{"molecule_id": "action-row", "content": {"alignment": "split"}, "children": [{"atom_id": "btn-secondary", "content": {"label": "Volver", "accion": {"tipo": "navegar", "hacia": "inicio"}}}, {"atom_id": "btn-primary", "content": {"label": "Revisar y entregar", "accion": {"tipo": "navegar", "hacia": "inicio"}}}]}], "estado": {}}, "alert": {"nodos": [{"molecule_id": "alert", "content": {"variant": "info", "title": "Antes de empezar", "message": "Cada requisito obligatorio necesita un material en estado listo."}}, {"molecule_id": "alert", "content": {"variant": "warning", "collapsible": true, "summary": "¿Qué cuenta como material listo?"}, "children": [{"atom_id": "text-body", "content": {"text": "Un borrador se puede adjuntar, pero no cumple el requisito."}}]}, {"molecule_id": "alert", "content": {"variant": "error", "title": "Falta un requisito", "message": "El plan no cumple todavía."}}], "estado": {}}, "requirement-item": {"nodos": [{"molecule_id": "requirement-item", "content": {"requisito_id": "R1", "mostrar_descripcion": true, "ayuda": "Una página basta."}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R2", "mostrar_descripcion": true}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R3", "mostrar_descripcion": true, "permitir_marcar_revisado": true}}], "estado": {"R2": "M2", "R3": "M4"}}, "material-picker": {"nodos": [{"molecule_id": "material-picker", "content": {"requisito_id": "R3", "material_ids": ["M4", "M5", "M3"]}}], "estado": {"R1": "M1"}}, "progress-summary": {"nodos": [{"molecule_id": "progress-summary", "content": {"mostrar_pendientes": true}}], "estado": {"R1": "M1"}}, "brief-viewer": {"nodos": [{"molecule_id": "brief-viewer", "content": {"summary": "Explica el problema, muestra tu evidencia y planifica dos semanas.", "detail_level": "brief"}}], "estado": {}}, "header-section": {"nodos": [{"organism_id": "header-section", "content": {"detail_level": "title_support"}, "children": [{"atom_id": "badge", "content": {"text": "Antes de empezar", "variant": "info"}}, {"atom_id": "heading", "content": {"text": "Qué te piden en el informe", "level": "xl"}}, {"atom_id": "text-body", "content": {"text": "Un informe breve con el problema, la evidencia y un plan."}}]}], "estado": {}}, "content-grid": {"nodos": [{"organism_id": "content-grid", "content": {"layout": "2-col", "gap": "md"}, "children": [{"molecule_id": "card", "children": [{"atom_id": "heading", "content": {"text": "Problema", "level": "md"}}, {"atom_id": "text-body", "content": {"text": "Una página."}}]}, {"molecule_id": "card", "children": [{"atom_id": "heading", "content": {"text": "Evidencia", "level": "md"}}, {"atom_id": "text-body", "content": {"text": "Entrevistas o fuentes."}}]}]}], "estado": {}}, "navigation-bar": {"nodos": [{"organism_id": "navigation-bar", "content": {"orientation": "horizontal"}, "children": [{"atom_id": "btn-secondary", "content": {"label": "Brief", "accion": {"tipo": "navegar", "hacia": "inicio"}}}, {"atom_id": "btn-secondary", "content": {"label": "Materiales", "accion": {"tipo": "navegar", "hacia": "inicio"}}}, {"atom_id": "btn-secondary", "content": {"label": "Revisión", "accion": {"tipo": "navegar", "hacia": "inicio"}}}]}], "estado": {}}, "split-layout": {"nodos": [{"organism_id": "split-layout", "content": {"ratio": "1:1", "stack_at": "768px"}, "children": [{"molecule_id": "requirement-item", "content": {"requisito_id": "R1", "mostrar_descripcion": true}}, {"molecule_id": "material-picker", "content": {"requisito_id": "R1", "material_ids": ["M1", "M2"]}}]}], "estado": {}}}, REFV={"estados": [{"id": "inicio", "titulo": "Preparar la entrega", "componentes": [{"organism_id": "header-section", "children": [{"atom_id": "heading", "content": {"text": "Informe de avance 2", "level": "xl"}}, {"atom_id": "text-body", "content": {"text": "Taller de Proyecto · se entrega el viernes 10 de octubre, 23:59."}}, {"molecule_id": "progress-summary", "content": {"mostrar_pendientes": true}}]}, {"organism_id": "content-grid", "content": {"layout": "2-col"}, "children": [{"molecule_id": "requirement-item", "content": {"requisito_id": "R1", "mostrar_descripcion": true, "ayuda": "Una página basta: qué problema es y a quién afecta."}}, {"molecule_id": "material-picker", "content": {"requisito_id": "R1"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R2", "mostrar_descripcion": true}}, {"molecule_id": "material-picker", "content": {"requisito_id": "R2"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R3", "mostrar_descripcion": true}}, {"molecule_id": "material-picker", "content": {"requisito_id": "R3"}}]}, {"molecule_id": "action-row", "children": [{"atom_id": "btn-primary", "content": {"label": "Revisar y entregar", "accion": {"tipo": "navegar", "hacia": "revision"}}}]}]}, {"id": "revision", "titulo": "Revisión final", "componentes": [{"organism_id": "header-section", "children": [{"atom_id": "heading", "content": {"text": "Revisión final", "level": "xl"}}, {"molecule_id": "progress-summary", "content": {"mostrar_pendientes": true}}, {"molecule_id": "action-row", "children": [{"atom_id": "btn-secondary", "content": {"label": "Volver a los materiales", "accion": {"tipo": "navegar", "hacia": "inicio"}}}, {"atom_id": "btn-primary", "content": {"label": "Entregar informe", "accion": {"tipo": "entregar", "hacia": "confirmado"}}}]}]}, {"organism_id": "content-grid", "content": {"layout": "1-col"}, "children": [{"molecule_id": "requirement-item", "content": {"requisito_id": "R1", "mostrar_descripcion": false, "permitir_marcar_revisado": true}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R2", "mostrar_descripcion": false, "permitir_marcar_revisado": true}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R3", "mostrar_descripcion": false, "permitir_marcar_revisado": true}}]}]}, {"id": "confirmado", "titulo": "Entrega realizada", "es_confirmacion": true, "componentes": [{"organism_id": "header-section", "children": [{"atom_id": "heading", "content": {"text": "Tu informe quedó entregado", "level": "xl"}}, {"atom_id": "text-body", "content": {"text": "Quedó registrado antes del plazo."}}, {"atom_id": "badge", "content": {"text": "Entregado", "variant": "success"}}]}]}], "inicial": "inicio", "resumen_decisiones": "Referencia escrita a mano (no proviene de ningún modelo)."}, RUN={"id": "156a2c4a-6704-4033-88e2-f2fd6972d67d", "ts": 1791390065.069275, "llamada_api": {"proveedor": "gemini", "model_requested": "gemini-2.5-flash", "model_version_reportado": "gemini-2.5-flash", "http_status": 200, "duracion_seg": 42.69, "temperatura": 0.4, "error": null, "parse_error": null}, "pack": {"familiaridad": "baja", "intencion": "La persona debe poder entender qué se le pide, reunir lo necesario y entregar con confianza.", "nucleo": ["Usar solo los datos entregados; no inventar requisitos, materiales ni plazos.", "Todos los requisitos obligatorios deben poder revisarse y recibir material antes de entregar."], "libertad_concedida": ["Ayudar al usuario en el recorrido"], "campo_de_decision": "La persona debera poder entregar las tareas"}, "observacion": "Quiero ver si con familiaridad baja explica el brief antes de pedir materiales.", "sistema_diseno": {"ds": "ds-01 v3.0.0", "adiciones_p2": "3.0.0"}, "validacion": {"ok": false, "errores": ["estado «estado_preparar_entrega» · content-grid[2] > card[0] > requirement-item[1]: «requirement-item» no puede estar dentro de «card».", "estado «estado_preparar_entrega» · content-grid[2] > card[0] > material-picker[2]: «material-picker» no puede estar dentro de «card».", "estado «estado_preparar_entrega» · content-grid[2] > card[1] > requirement-item[1]: «requirement-item» no puede estar dentro de «card».", "estado «estado_preparar_entrega» · content-grid[2] > card[1] > material-picker[2]: «material-picker» no puede estar dentro de «card».", "estado «estado_preparar_entrega» · content-grid[2] > card[2] > requirement-item[1]: «requirement-item» no puede estar dentro de «card».", "estado «estado_preparar_entrega» · content-grid[2] > card[2] > material-picker[2]: «material-picker» no puede estar dentro de «card».", "estado «estado_preparar_entrega» · content-grid[2] > card[3] > requirement-item[1]: «requirement-item» no puede estar dentro de «card».", "estado «estado_preparar_entrega» · content-grid[2] > card[3] > material-picker[2]: «material-picker» no puede estar dentro de «card».", "estado «estado_confirmacion» · content-grid[1] > text-body[0]: «text-body» no puede estar dentro de «content-grid».", "estado «estado_confirmacion» · content-grid[1] > card[1] > requirement-item[1]: «requirement-item» no puede estar dentro de «card».", "estado «estado_confirmacion» · content-grid[1] > card[2] > requirement-item[1]: «requirement-item» no puede estar dentro de «card».", "estado «estado_confirmacion» · content-grid[1] > card[3] > requirement-item[1]: «requirement-item» no puede estar dentro de «card».", "estado «estado_confirmacion» · content-grid[1] > card[4] > requirement-item[1]: «requirement-item» no puede estar dentro de «card».", "estado «estado_preparar_entrega»: el botón «Cancelar» lleva a un estado inexistente: estado_dashboard_previo.", "estado «estado_entrega_exitosa»: el botón «Volver al inicio» lleva a un estado inexistente: estado_dashboard_previo."], "advertencias": [], "metricas": {"n_estados": 3, "n_estados_alcanzables": 3, "n_nodos_terminales": 35, "profundidad_maxima": 3, "n_acciones_totales": 5, "n_acciones_primarias": 3, "n_controles_interactivos": 11, "n_requirement_item": 8, "n_material_picker": 4, "n_progress_summary": 1, "n_alert": 1, "n_alert_plegables": 0, "n_ayudas_en_requisitos": 4, "pasos_minimos_hasta_entrega": 4, "tipos_en_estado_inicial": ["header-section", "alert", "content-grid", "action-row"], "orden_requisitos_en_estado_inicial": ["R1", "R2", "R3", "R4"]}, "completable": true, "ruta_minima": [{"tipo": "adjuntar", "requisito_id": "R1", "material_id": "M1"}, {"tipo": "adjuntar", "requisito_id": "R2", "material_id": "M2"}, {"tipo": "adjuntar", "requisito_id": "R3", "material_id": "M5"}, {"tipo": "entregar", "hacia": "estado_confirmacion"}], "gobernanza": {"propiedades_escritas_por_el_modelo": {"CONSTRAINED": {"header-section.detail_level": 3, "heading.level": 11, "brief-viewer.detail_level": 1, "progress-summary.mostrar_pendientes": 1, "alert.variant": 1, "content-grid.layout": 2, "content-grid.gap": 2, "card.density": 8, "card.emphasis": 8, "requirement-item.mostrar_descripcion": 8, "action-row.alignment": 3}, "OPEN": {"heading.text": 11, "text-body.text": 4, "brief-viewer.summary": 1, "alert.title": 1, "alert.message": 1, "requirement-item.requisito_id": 8, "requirement-item.ayuda": 4, "material-picker.requisito_id": 4, "material-picker.material_ids": 4, "btn-secondary.label": 2, "btn-secondary.accion": 2, "btn-primary.label": 3, "btn-primary.accion": 3}}, "elecciones_acotadas": {"header-section.detail_level": {"title_support": 3}, "heading.level": {"xl": 3, "md": 8}, "brief-viewer.detail_level": {"brief": 1}, "progress-summary.mostrar_pendientes": {"True": 1}, "alert.variant": {"info": 1}, "content-grid.layout": {"1-col": 2}, "content-grid.gap": {"lg": 1, "md": 1}, "card.density": {"comfortable": 8}, "card.emphasis": {"default": 8}, "requirement-item.mostrar_descripcion": {"True": 4, "False": 4}, "action-row.alignment": {"end": 3}}}}, "ui_spec": {"estados": [{"id": "estado_preparar_entrega", "titulo": "Preparar entrega: Informe de avance 2", "es_confirmacion": false, "componentes": [{"organism_id": "header-section", "content": {"detail_level": "title_support"}, "children": [{"atom_id": "heading", "content": {"text": "Informe de avance 2 - Taller de Proyecto", "level": "xl"}}, {"atom_id": "text-body", "content": {"text": "Plazo de entrega: viernes 10 de octubre, 23:59"}}, {"molecule_id": "brief-viewer", "content": {"summary": "Informe breve que explica el problema, muestra la evidencia reunida y define el plan de las próximas dos semanas.", "detail_level": "brief"}}, {"molecule_id": "progress-summary", "content": {"mostrar_pendientes": true}}]}, {"molecule_id": "alert", "content": {"variant": "info", "title": "Requisitos obligatorios pendientes", "message": "La entrega solo se puede concretar si todos los requisitos obligatorios tienen un material adjunto en estado 'listo'."}}, {"organism_id": "content-grid", "content": {"layout": "1-col", "gap": "lg"}, "children": [{"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "default"}, "children": [{"atom_id": "heading", "content": {"text": "1. Planteamiento del problema", "level": "md"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R1", "mostrar_descripcion": true, "ayuda": "Una página que explique el problema y a quién afecta. Asegúrate de que el documento sea claro y conciso."}}, {"molecule_id": "material-picker", "content": {"requisito_id": "R1", "material_ids": ["M1"]}}]}, {"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "default"}, "children": [{"atom_id": "heading", "content": {"text": "2. Evidencia de la investigación", "level": "md"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R2", "mostrar_descripcion": true, "ayuda": "Adjunta entrevistas, fuentes o registros de observación que respalden el problema. Puedes adjuntar documentos o imágenes."}}, {"molecule_id": "material-picker", "content": {"requisito_id": "R2", "material_ids": ["M2", "M3"]}}]}, {"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "default"}, "children": [{"atom_id": "heading", "content": {"text": "3. Plan de las próximas dos semanas", "level": "md"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R3", "mostrar_descripcion": true, "ayuda": "Crea un calendario con actividades y responsables para las próximas dos semanas. Puede ser un documento o una planilla."}}, {"molecule_id": "material-picker", "content": {"requisito_id": "R3", "material_ids": ["M4", "M5"]}}]}, {"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "default"}, "children": [{"atom_id": "heading", "content": {"text": "4. Bitácora de proceso (Opcional)", "level": "md"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R4", "mostrar_descripcion": true, "ayuda": "Si deseas, adjunta un registro breve de las decisiones tomadas hasta ahora. Este requisito no es obligatorio para la entrega."}}, {"molecule_id": "material-picker", "content": {"requisito_id": "R4", "material_ids": ["M6"]}}]}]}, {"molecule_id": "action-row", "content": {"alignment": "end"}, "children": [{"atom_id": "btn-secondary", "content": {"label": "Cancelar", "accion": {"tipo": "navegar", "hacia": "estado_dashboard_previo"}}}, {"atom_id": "btn-primary", "content": {"label": "Entregar informe", "accion": {"tipo": "entregar", "hacia": "estado_confirmacion"}}}]}]}, {"id": "estado_confirmacion", "titulo": "Confirmar entrega del Informe de avance 2", "es_confirmacion": true, "componentes": [{"organism_id": "header-section", "content": {"detail_level": "title_support"}, "children": [{"atom_id": "heading", "content": {"text": "Confirmar entrega del Informe de avance 2", "level": "xl"}}, {"atom_id": "text-body", "content": {"text": "Estás a punto de entregar el informe. Revisa que todos los requisitos obligatorios estén cubiertos con materiales 'listos'."}}]}, {"organism_id": "content-grid", "content": {"layout": "1-col", "gap": "md"}, "children": [{"atom_id": "text-body", "content": {"text": "Los siguientes requisitos se entregarán con los materiales adjuntos:"}}, {"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "default"}, "children": [{"atom_id": "heading", "content": {"text": "Planteamiento del problema", "level": "md"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R1", "mostrar_descripcion": false}}]}, {"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "default"}, "children": [{"atom_id": "heading", "content": {"text": "Evidencia de la investigación", "level": "md"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R2", "mostrar_descripcion": false}}]}, {"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "default"}, "children": [{"atom_id": "heading", "content": {"text": "Plan de las próximas dos semanas", "level": "md"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R3", "mostrar_descripcion": false}}]}, {"molecule_id": "card", "content": {"density": "comfortable", "emphasis": "default"}, "children": [{"atom_id": "heading", "content": {"text": "Bitácora de proceso", "level": "md"}}, {"molecule_id": "requirement-item", "content": {"requisito_id": "R4", "mostrar_descripcion": false}}]}]}, {"molecule_id": "action-row", "content": {"alignment": "end"}, "children": [{"atom_id": "btn-secondary", "content": {"label": "Volver a revisar", "accion": {"tipo": "navegar", "hacia": "estado_preparar_entrega"}}}, {"atom_id": "btn-primary", "content": {"label": "Confirmar y entregar", "accion": {"tipo": "entregar", "hacia": "estado_entrega_exitosa"}}}]}]}, {"id": "estado_entrega_exitosa", "titulo": "Entrega realizada", "es_confirmacion": true, "componentes": [{"organism_id": "header-section", "content": {"detail_level": "title_support"}, "children": [{"atom_id": "heading", "content": {"text": "¡Informe de avance entregado con éxito!", "level": "xl"}}, {"atom_id": "text-body", "content": {"text": "Tu informe ha sido enviado. Recibirás una confirmación por correo electrónico."}}]}, {"molecule_id": "action-row", "content": {"alignment": "end"}, "children": [{"atom_id": "btn-primary", "content": {"label": "Volver al inicio", "accion": {"tipo": "navegar", "hacia": "estado_dashboard_previo"}}}]}]}], "inicial": "estado_preparar_entrega", "resumen_decisiones": "Se diseñó una experiencia de tres estados (preparación, confirmación, éxito) para guiar al usuario a través de la comprensión de requisitos, adjuntar materiales y confirmar la entrega, priorizando la claridad y el soporte para un usuario con baja familiaridad."}, "sesion_eventos": [{"n": 1, "ts": 1791390087.3532603, "estado_origen": "estado_preparar_entrega", "evento": {"tipo": "adjuntar", "requisito_id": "R1", "material_id": "M1"}, "resultado": {"ok": true, "bloqueado": false, "motivo": null, "faltantes": []}}, {"n": 2, "ts": 1791390096.5423229, "estado_origen": "estado_preparar_entrega", "evento": {"tipo": "adjuntar", "requisito_id": "R2", "material_id": "M2"}, "resultado": {"ok": true, "bloqueado": false, "motivo": null, "faltantes": []}}, {"n": 3, "ts": 1791390097.337283, "estado_origen": "estado_preparar_entrega", "evento": {"tipo": "adjuntar", "requisito_id": "R2", "material_id": "M3"}, "resultado": {"ok": true, "bloqueado": false, "motivo": null, "faltantes": []}}, {"n": 4, "ts": 1791390098.6666262, "estado_origen": "estado_preparar_entrega", "evento": {"tipo": "adjuntar", "requisito_id": "R2", "material_id": "M2"}, "resultado": {"ok": true, "bloqueado": false, "motivo": null, "faltantes": []}}, {"n": 5, "ts": 1791390106.9509296, "estado_origen": "estado_preparar_entrega", "evento": {"tipo": "adjuntar", "requisito_id": "R3", "material_id": "M5"}, "resultado": {"ok": true, "bloqueado": false, "motivo": null, "faltantes": []}}, {"n": 6, "ts": 1791390110.3049471, "estado_origen": "estado_preparar_entrega", "evento": {"tipo": "adjuntar", "requisito_id": "R4", "material_id": "M6"}, "resultado": {"ok": true, "bloqueado": false, "motivo": null, "faltantes": []}}, {"n": 7, "ts": 1791390112.5386398, "estado_origen": "estado_preparar_entrega", "evento": {"tipo": "entregar", "hacia": "estado_confirmacion"}, "resultado": {"ok": true, "bloqueado": false, "motivo": null, "faltantes": []}}, {"n": 8, "ts": 1791390115.4616168, "estado_origen": "estado_confirmacion", "evento": {"tipo": "entregar", "hacia": "estado_entrega_exitosa"}, "resultado": {"ok": true, "bloqueado": false, "motivo": null, "faltantes": []}}, {"n": 9, "ts": 1791390117.016437, "estado_origen": "estado_entrega_exitosa", "evento": {"tipo": "navegar", "hacia": "estado_dashboard_previo"}, "resultado": {"ok": false, "bloqueado": true, "motivo": "El destino «estado_dashboard_previo» no existe en la especificación.", "faltantes": []}}, {"n": 10, "ts": 1791390119.294728, "estado_origen": "estado_entrega_exitosa", "evento": {"tipo": "navegar", "hacia": "estado_dashboard_previo"}, "resultado": {"ok": false, "bloqueado": true, "motivo": "El destino «estado_dashboard_previo» no existe en la especificación.", "faltantes": []}}]}, RUN2={"meta": {"id": "e58b8f4e-f891-40aa-8f19-5f071bf776d3", "ts": 1791299201.8124146, "sistema_diseno": {"ds": "ds-01 v1.0.0", "adiciones_p2": "2.0.0"}, "modelo": "gemini-2.5-flash", "duracion": 31.97}, "adaptacion": {"solicitud": "Quiero ver todo junto, sin pasos", "aplicable": true, "decision": null, "resumen_cambio": "Hemos reorganizado la pantalla de preparación para que veas todos los requisitos y materiales juntos, sin separaciones, facilitando una visión completa de tu progreso.", "progreso": {"R1": "M1", "R2": "M2", "R3": "M5", "R4": "M6"}, "metricas_antes": {"n_estados": 3, "n_estados_alcanzables": 3, "n_nodos_terminales": 24, "profundidad_maxima": 2, "n_acciones_totales": 2, "n_acciones_primarias": 1, "n_controles_interactivos": 26, "n_requirement_item": 4, "n_material_picker": 4, "n_progress_summary": 1, "n_alert": 1, "n_alert_plegables": 1, "n_ayudas_en_requisitos": 4, "pasos_minimos_hasta_entrega": 4, "tipos_en_estado_inicial": ["header-section", "alert", "heading", "content-grid", "divider", "content-grid", "action-row"], "orden_requisitos_en_estado_inicial": ["R1", "R2", "R3", "R4"]}, "metricas_despues": {"n_estados": 3, "n_estados_alcanzables": 3, "n_nodos_terminales": 21, "profundidad_maxima": 2, "n_acciones_totales": 2, "n_acciones_primarias": 1, "n_controles_interactivos": 26, "n_requirement_item": 4, "n_material_picker": 4, "n_progress_summary": 1, "n_alert": 1, "n_alert_plegables": 1, "n_ayudas_en_requisitos": 4, "pasos_minimos_hasta_entrega": 4, "tipos_en_estado_inicial": ["header-section", "alert", "heading", "content-grid", "content-grid", "action-row"], "orden_requisitos_en_estado_inicial": ["R1", "R2", "R3", "R4"]}, "estructura_antes": ["header-section · 4 hijos", "alert · 2 hijos", "heading", "content-grid (1-col) · 5 hijos", "divider", "content-grid (1-col) · 5 hijos", "action-row · 1 hijos"], "estructura_despues": ["header-section · 4 hijos", "alert · 2 hijos", "heading", "content-grid (1-col) · 4 hijos", "content-grid (1-col) · 4 hijos", "action-row · 1 hijos"]}, "revalidacion": {"antes": 2, "despues": 0}}, RULES=[["Estructura", "La especificación tiene «estados» (lista no vacía) e «inicial».", "Estructura incompleta: se requieren 'estados' (lista no vacía) e 'inicial'."], ["Estructura", "Los ids de estado son únicos y «inicial» existe.", "id de estado duplicado: paso1"], ["Estructura", "Cada nodo declara exactamente un tipo.", "el nodo debe tener exactamente uno de organism_id, molecule_id o atom_id."], ["Catálogo", "Solo se usan componentes del catálogo (los excluidos de P2 se rechazan con su motivo).", "«text-input» no existe en el catálogo (excluido en P2: No hay formularios de texto en esta tarea.)."], ["Catálogo", "El nivel declarado coincide con el del componente.", "«card» es molecule, pero se declaró como atom."], ["Composición", "Un componente solo va dentro de los padres permitidos.", "«divider» no puede estar dentro de «content-grid»."], ["Composición", "Se respeta el máximo y el mínimo de hijos.", "«card» admite como máximo 8 hijos y tiene 9."], ["Composición", "La anidación no supera 3 niveles.", "anidación de 4 niveles (máximo 3)."], ["Composición", "Las propiedades obligatorias están presentes.", "falta el campo obligatorio «label»."], ["Composición", "Los valores acotados pertenecen a la lista permitida.", "variant «accent» no permitido para «badge» (opciones: ['error', 'info', 'neutral', 'success', 'warning'])."], ["Composición", "Reglas propias de cada componente (botones por tarjeta, un solo botón principal, encabezado con título, nivel de detalle).", "«action-row» admite como máximo 1 btn-primary."], ["Composición", "Un alert plegable lleva título visible; los íconos existen en el set.", "icono «corazon» no existe en el set (opciones: ['alert', 'arrow', …])."], ["Gobernanza", "El validador rechaza la propuesta si el modelo escribe propiedades INVARIANT o SISTEMA.", "«nombre» de «requirement-item» es SISTEMA (la calcula el motor); no le corresponde al modelo escribirla."], ["Gobernanza", "Una propiedad no declarada en la gobernanza genera una advertencia.", "«color» no está declarada en la gobernanza de «text-body»."], ["Referencias", "Los requisitos y materiales referenciados existen.", "referencia un requisito inexistente: «R99»."], ["Recorrido", "Todo botón lleva a un estado que existe.", "el botón «Cancelar» lleva a un estado inexistente: estado_dashboard_previo."], ["Recorrido", "«Entregar» lleva a un estado de confirmación; a la confirmación solo se llega entregando.", "el botón «Ir» navega directo al estado de confirmación «ok» sin pasar por la entrega."], ["Recorrido", "El estado de confirmación es el final y no lleva botón de entrega.", "El estado «confirmar» está marcado es_confirmacion pero tiene una acción «entregar»…"], ["Recorrido", "Existe al menos un estado de confirmación.", "Ningún estado está marcado con es_confirmacion: true; la tarea no puede terminar."], ["Recorrido", "Cada requisito obligatorio aparece y permite adjuntar material.", "El requisito obligatorio R3 (Plan de las próximas dos semanas) aparece, pero ningún estado alcanzable permite adjuntarle material."], ["Recorrido", "La entrega es posible: el validador simula el recorrido con el mismo motor que se usa al ejecutar.", "Con las acciones que ofrece esta especificación no se puede completar la entrega…"], ["Advertencia", "Estados inalcanzables, callejones sin salida y falta de retorno.", "El estado «x» no es alcanzable desde el inicial."], ["Ejecución", "El motor bloquea adjuntar un tipo incompatible o un material ya usado.", "«Fotos_observacion.zip» es de tipo imagenes; «Planteamiento del problema» acepta: documento."], ["Ejecución", "El motor bloquea entregar con requisitos sin cumplir y registra el intento.", "No se puede entregar: hay requisitos obligatorios sin cumplir."]], META={"pruebas": 58};
+const $ = id => document.getElementById(id);
+function el(tag, cls, text){ const e = document.createElement(tag); if(cls) e.className = cls; if(text != null) e.textContent = text; return e; }
+function J(o){ return JSON.stringify(o, null, 2); }
+
+/* ───── estado y renderer reutilizados del prototipo ───── */
+let CTX = { datos: DATOS, icons: ICONS }, SES = null, VISTA = null, ACTUAL = null;
+function vistaDemo(st){
+  const ev = {};
+  DATOS.requisitos.forEach(r => {
+    const mid = st.adjuntos[r.id];
+    if (!mid) ev[r.id] = {estado: 'sin_material', motivo: 'falta adjuntar un material', material_id: null};
+    else { const m = DATOS.materiales.find(x => x.id === mid);
+      if (!r.acepta.includes(m.tipo)) ev[r.id] = {estado: 'no_cumple', material_id: mid, motivo: '«' + m.nombre + '» es de tipo ' + m.tipo + '; este requisito acepta: ' + r.acepta.join(', ')};
+      else if (m.estado !== 'listo') ev[r.id] = {estado: 'no_cumple', material_id: mid, motivo: '«' + m.nombre + '» está en ' + m.estado + ', no en estado listo'};
+      else ev[r.id] = {estado: 'cumple', material_id: mid, motivo: 'cumple'}; }
+  });
+  const falt = DATOS.requisitos.filter(r => r.obligatorio && ev[r.id].estado !== 'cumple');
+  return {evaluacion: ev, entregable: falt.length === 0, faltantes: falt};
+}
+/* ─── íconos del token_set (solo geometría del sistema) ─── */
+function icono(nombre, tam, significado){
+  const d = CTX.icons[nombre]; const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(NS, 'svg'); const t = [16, 20, 24].includes(Number(tam)) ? Number(tam) : 16;
+  svg.setAttribute('width', t); svg.setAttribute('height', t); svg.setAttribute('viewBox', '0 0 24 24'); svg.setAttribute('fill', 'none');
+  svg.setAttribute('stroke', 'currentColor'); svg.setAttribute('stroke-width', '1.75'); svg.setAttribute('stroke-linecap', 'round'); svg.setAttribute('stroke-linejoin', 'round');
+  svg.setAttribute('class', 'ic');
+  if (significado) { svg.setAttribute('role', 'img'); svg.setAttribute('aria-label', significado); } else svg.setAttribute('aria-hidden', 'true');
+  if (d) { const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); svg.appendChild(p); }
+  return svg;
+}
+function conIcono(tag, cls, nombre, texto, tam){ const e = el(tag, cls); if (nombre) e.appendChild(icono(nombre, tam || 16)); e.appendChild(document.createTextNode(texto)); return e; }
+
+
+/* ─── renderer de componentes (solo textContent: nada del modelo entra como HTML) ─── */
+function tipoNodo(n){ for (const k of ['organism_id', 'molecule_id', 'atom_id']) if (n && n[k]) return n[k]; return null; }
+function hijos(n){ return (n.children || []).map(nodo).filter(Boolean); }
+function ct(n){ return (n && n.content) || {}; }
+const ICONO_BADGE = {success: 'check', warning: 'alert', error: 'alert', info: 'info'};
+const ICONO_ALERT = {info: 'info', success: 'check', warning: 'alert', error: 'alert'};
+let BRIEF_ABIERTO = null;
+function nodo(n){
+  const id = tipoNodo(n), c = ct(n);
+  switch (id) {
+    case 'heading': { const lv = ['xl', 'lg', 'md'].includes(c.level) ? c.level : 'lg'; return el(lv === 'xl' ? 'h1' : lv === 'lg' ? 'h2' : 'h3', 'h-' + lv, c.text || ''); }
+    case 'text-body': return el('p', 'p-body', c.text || '');
+    case 'text-muted': return el('p', 'p-muted', c.text || '');
+    case 'badge': { const v = ['success', 'warning', 'error', 'info', 'neutral'].includes(c.variant) ? c.variant : 'neutral'; return conIcono('span', 'bd ' + v, ICONO_BADGE[v], c.text || ''); }
+    case 'divider': { if (c.orientation === 'vertical') { const v = el('span', 'dv-v'); v.setAttribute('role', 'separator'); v.setAttribute('aria-orientation', 'vertical'); return v; } return el('hr', 'dv'); }
+    case 'icon': return icono(c.name, c.size, c.meaning);
+    case 'btn-primary': case 'btn-secondary': {
+      const b = el('button', 'ab ' + (id === 'btn-primary' ? 'p' : 's'), c.label || ''); b.type = 'button';
+      const a = c.accion || {}; b.onclick = () => evento({tipo: a.tipo, hacia: a.hacia}); return b;
+    }
+    case 'action-row': { const r = el('div', 'row-act' + (c.alignment === 'end' ? ' end' : c.alignment === 'split' ? ' spl' : '')); hijos(n).forEach(x => r.appendChild(x)); return r; }
+    case 'card': { const r = el('div', 'card' + (c.density === 'compact' ? ' compact' : '') + (c.emphasis === 'raised' ? ' raised' : '')); hijos(n).forEach(x => r.appendChild(x)); return r; }
+    case 'stat-block': { const r = el('div', 'stat'); if (c.value) r.appendChild(el('p', 'stat-v', String(c.value))); if (c.label) r.appendChild(el('p', 'p-muted', String(c.label))); hijos(n).forEach(x => r.appendChild(x)); return r; }
+    case 'header-section': { const r = el('header', 'o-head'); hijos(n).forEach(x => r.appendChild(x)); return r; }
+    case 'content-grid': { const k = ['1-col', '2-col', '3-col', '4-col'].includes(c.layout) ? c.layout[0] : '1'; const g = {md: 'gm', lg: 'gl', xl: 'gx'}[c.gap] || 'gm'; const r = el('section', 'grid c' + k + ' ' + g); hijos(n).forEach(x => r.appendChild(x)); return r; }
+    case 'split-layout': {
+      const rt = {'1:1': 'r11', '2:1': 'r21', '1:2': 'r12'}[c.ratio] || 'r11'; const st = c.stack_at === '1024px' ? 's1024' : 's768';
+      const r = el('section', 'sp2 ' + rt + ' ' + st); hijos(n).forEach(x => r.appendChild(x)); return r;
+    }
+    case 'navigation-bar': { const r = el('nav', 'nav' + (c.orientation === 'vertical' ? ' v' : '')); r.setAttribute('aria-label', 'Navegación de la tarea'); hijos(n).forEach(x => r.appendChild(x)); return r; }
+    case 'alert': {
+      const v = ['info', 'success', 'warning', 'error'].includes(c.variant) ? c.variant : 'info';
+      const cuerpo = () => { const f = document.createDocumentFragment(); if (c.title && !c.collapsible) f.appendChild(conIcono('div', 'al-t', ICONO_ALERT[v], c.title, 20)); if (c.message) f.appendChild(el('p', null, c.message)); hijos(n).forEach(x => f.appendChild(x)); return f; };
+      if (c.collapsible) { const d = el('details', 'al ' + v); d.appendChild(conIcono('summary', 'al-t', ICONO_ALERT[v], c.summary || c.title || 'Más información', 20)); d.appendChild(cuerpo()); return d; }
+      const r = el('div', 'al ' + v); r.setAttribute('role', v === 'error' ? 'alert' : 'note'); if (!c.title) r.insertBefore(icono(ICONO_ALERT[v], 20), r.firstChild); r.appendChild(cuerpo()); return r;
+    }
+    case 'progress-bar': return barra(c);
+    case 'brief-viewer': return visorBrief(c);
+    case 'requirement-item': return requisito(c);
+    case 'material-picker': return selector(c);
+    case 'progress-summary': return resumen(c);
+    default: return el('p', 'empty', 'Componente no reconocido: ' + (id || '?'));
+  }
+}
+function conteoObligatorios(){
+  const ob = CTX.datos.requisitos.filter(r => r.obligatorio), ok = ob.filter(r => VISTA.evaluacion[r.id].estado === 'cumple');
+  return {ob, ok};
+}
+function barra(c){
+  const {ob, ok} = conteoObligatorios(); const pct = ob.length ? Math.round(100 * ok.length / ob.length) : 0;
+  const r = el('div', 'pb'); const top = el('div', 'pb-top'); top.appendChild(el('span', null, c.label || 'Avance'));
+  if (c.detail_level !== 'label') top.appendChild(el('span', null, ok.length + ' de ' + ob.length));
+  r.appendChild(top);
+  const t = el('div', 'pb-track'); t.setAttribute('role', 'progressbar'); t.setAttribute('aria-valuemin', '0'); t.setAttribute('aria-valuemax', String(ob.length)); t.setAttribute('aria-valuenow', String(ok.length)); t.setAttribute('aria-label', c.label || 'Avance');
+  const i = el('i'); i.style.width = pct + '%'; t.appendChild(i); r.appendChild(t);
+  if (c.detail_level === 'label_value_hint') r.appendChild(conIcono('div', 'pb-hint', ok.length === ob.length ? 'check' : 'clock', ok.length === ob.length ? 'Todo cubierto' : 'Faltan: ' + ob.filter(q => !ok.includes(q)).map(q => q.nombre).join(', ')));
+  return r;
+}
+function visorBrief(c){
+  const b = CTX.datos.brief; if (BRIEF_ABIERTO === null) BRIEF_ABIERTO = c.detail_level === 'expanded';
+  const r = el('div', 'bv');
+  r.appendChild(conIcono('div', 'bv-src', 'file', b.curso + ' · ' + b.entrega));
+  r.appendChild(el('p', null, c.summary || ''));
+  const t = el('button', 'bv-t'); t.type = 'button'; t.setAttribute('aria-expanded', String(BRIEF_ABIERTO));
+  t.appendChild(icono('chevron', 16)); t.appendChild(document.createTextNode(BRIEF_ABIERTO ? 'Ocultar el brief completo' : 'Leer el brief completo'));
+  t.onclick = () => { BRIEF_ABIERTO = !BRIEF_ABIERTO; t.setAttribute('aria-expanded', String(BRIEF_ABIERTO)); t.lastChild.textContent = BRIEF_ABIERTO ? 'Ocultar el brief completo' : 'Leer el brief completo'; full.hidden = !BRIEF_ABIERTO; };
+  r.appendChild(t);
+  const full = el('p', 'bv-full', b.texto_completo || b.descripcion); full.hidden = !BRIEF_ABIERTO; r.appendChild(full);
+  return r;
+}
+function requisito(c){
+  const rq = CTX.datos.requisitos.find(r => r.id === c.requisito_id); if (!rq) return el('p', 'empty', 'Requisito inexistente.');
+  const ev = VISTA.evaluacion[rq.id], r = el('article', 'rq ' + ev.estado);
+  const top = el('div', 'rq-top'); top.append(el('strong', null, rq.nombre), el('span', 'bd', rq.obligatorio ? 'Obligatorio' : 'Opcional')); r.appendChild(top);
+  if (c.mostrar_descripcion !== false) r.appendChild(el('p', 'p-muted', rq.descripcion));
+  const mat = ev.material_id ? CTX.datos.materiales.find(m => m.id === ev.material_id) : null;
+  r.appendChild(ev.estado === 'cumple' ? conIcono('p', 'st cumple', 'check', 'Cumple · ' + mat.nombre) : ev.estado === 'no_cumple' ? conIcono('p', 'st no_cumple', 'alert', 'No cumple · ' + ev.motivo) : conIcono('p', 'st', 'upload', 'Falta adjuntar material'));
+  if (c.ayuda && String(c.ayuda).trim()) { const d = el('details', 'ay'); d.appendChild(conIcono('summary', null, 'help', ' ¿Cómo lo cubro?')); d.appendChild(el('div', null, c.ayuda)); r.appendChild(d); }
+  if (c.permitir_marcar_revisado === true) {
+    const rev = SES.progreso.revisados.includes(rq.id); const b = el('button', 'rv'); b.type = 'button'; b.setAttribute('aria-pressed', String(rev));
+    if (rev) b.appendChild(icono('check', 16)); b.appendChild(document.createTextNode(rev ? ' Revisado' : 'Marcar como revisado'));
+    b.onclick = () => evento({tipo: 'revisar', requisito_id: rq.id}); r.appendChild(b);
+  }
+  return r;
+}
+function selector(c){
+  const rq = CTX.datos.requisitos.find(r => r.id === c.requisito_id); if (!rq) return el('p', 'empty', 'Requisito inexistente.');
+  const box = el('div', 'mp'); box.appendChild(el('div', 'mp-h', 'Materiales para «' + rq.nombre + '»'));
+  const ofrecidos = CTX.datos.materiales.filter(m => !Array.isArray(c.material_ids) || c.material_ids.includes(m.id));
+  const adj = SES.progreso.adjuntos;
+  ofrecidos.forEach(m => {
+    const aqui = adj[rq.id] === m.id, otro = Object.keys(adj).find(k => k !== rq.id && adj[k] === m.id), compat = rq.acepta.includes(m.tipo);
+    const fila = el('div', 'mt' + (aqui ? ' sel' : '')), izq = el('div'), nm = el('div', 'nm');
+    nm.appendChild(icono('file', 16)); nm.appendChild(el('b', null, m.nombre));
+    nm.appendChild(m.estado === 'listo' ? conIcono('span', 'bd success', 'check', 'Listo') : conIcono('span', 'bd warning', 'alert', 'Borrador'));
+    const sm = el('small', null, m.detalle + (!compat ? ' · No es un tipo que acepte este requisito.' : otro ? ' · Ya está en otro requisito.' : ''));
+    izq.append(nm, sm);
+    const bt = el('button', 'bt' + (aqui ? ' on' : ''), aqui ? 'Quitar' : 'Adjuntar'); bt.type = 'button'; bt.disabled = !aqui && (!compat || !!otro);
+    bt.onclick = () => evento({tipo: aqui ? 'quitar' : 'adjuntar', requisito_id: rq.id, material_id: m.id});
+    fila.append(izq, bt); box.appendChild(fila);
+  });
+  return box;
+}
+function resumen(c){
+  const {ob, ok} = conteoObligatorios();
+  const r = el('div', 'ps'); r.setAttribute('role', 'group');
+  r.appendChild(conIcono('p', 'ps-l' + (VISTA.entregable ? ' ok' : ''), VISTA.entregable ? 'check' : 'clock', ' ' + ok.length + ' de ' + ob.length + ' requisitos obligatorios cubiertos' + (VISTA.entregable ? '. Listo para entregar.' : '.'), 20));
+  const bar = el('div', 'ps-bar'); ob.forEach(q => bar.appendChild(el('i', VISTA.evaluacion[q.id].estado === 'cumple' ? 'on' : ''))); r.appendChild(bar);
+  if (c.mostrar_pendientes !== false && !VISTA.entregable) { const u = el('ul'); ob.filter(q => VISTA.evaluacion[q.id].estado !== 'cumple').forEach(q => u.appendChild(el('li', null, q.nombre))); r.appendChild(u); }
+  return r;
+}
+
+
+function evento(ev){
+  if (!ACTUAL) return; const st = ACTUAL.state; st.msg = null;
+  if (ev.tipo === 'adjuntar') {
+    const m = DATOS.materiales.find(x => x.id === ev.material_id), r = DATOS.requisitos.find(x => x.id === ev.requisito_id);
+    const otro = Object.keys(st.adjuntos).find(k => k !== r.id && st.adjuntos[k] === m.id);
+    if (otro) st.msg = '«' + m.nombre + '» ya está adjunto al requisito ' + otro + '; un material solo puede cubrir un requisito.';
+    else if (!r.acepta.includes(m.tipo)) st.msg = '«' + m.nombre + '» es de tipo ' + m.tipo + '; «' + r.nombre + '» acepta: ' + r.acepta.join(', ') + '.';
+    else st.adjuntos[r.id] = m.id;
+  } else if (ev.tipo === 'quitar') delete st.adjuntos[ev.requisito_id];
+  else if (ev.tipo === 'revisar') { const i = st.revisados.indexOf(ev.requisito_id); if (i >= 0) st.revisados.splice(i, 1); else st.revisados.push(ev.requisito_id); }
+  else st.msg = 'En la documentación los botones de navegación y de entrega no ejecutan nada: aquí solo se prueban adjuntar, quitar y revisar.';
+  ACTUAL.render();
+}
+function nuevoEstado(adj){ return {adjuntos: Object.assign({}, adj || {}), revisados: [], msg: null}; }
+function montar(cont, nodos, estado){
+  const ctx = {state: estado, render: null};
+  ctx.render = () => {
+    SES = {progreso: {adjuntos: estado.adjuntos, revisados: estado.revisados, entregado: false}, estado: 'demo'}; VISTA = vistaDemo(estado); ACTUAL = ctx;
+    cont.replaceChildren();
+    if (estado.msg) { const n = el('div', 'notice block'); n.setAttribute('role', 'alert'); n.appendChild(conIcono('div', 'nt', 'alert', estado.msg, 20)); cont.appendChild(n); }
+    nodos.forEach(n => { const x = nodo(n); if (x) cont.appendChild(x); });
+  };
+  const act = () => { ACTUAL = ctx; };
+  cont.addEventListener('pointerdown', act, true); cont.addEventListener('focusin', act, true);
+  ctx.render(); return ctx;
+}
+
+/* ───── navegación ───── */
+const SECCIONES = [['A · El prototipo', null], ['Empieza aquí', 'empieza'], ['Introducción y principios', 'intro'], ['Marco de investigación', 'marco'], ['Flujo del prototipo', 'flujo'], ['Consola y vista de la persona', 'uso'], ['Cómo leer una corrida', 'corrida'], ['Ficha por iteración', 'ficha'], ['Protocolo de corridas', 'protocolo'], ['Razones de diseño', 'razones'], ['Evidencias por versión', 'evidencias'],
+  ['B · Sistema de diseño', null], ['Fundamentos', 'fundamentos'], ['Catálogo de componentes', 'componentes'], ['Demos interactivas', 'demos'], ['Marco fijo y pantallas', 'pantallas'],
+  ['C · Referencia técnica', null], ['Adaptación durante el uso', 'adaptacion'], ['Reglas del validador', 'validador'], ['Integración y operación', 'integracion'], ['Cambios y límites', 'cambios'], ['Referencias', 'referencias']];
+(function(){ const nav = $('nav'); SECCIONES.forEach(([t, id]) => { if (!id) { nav.appendChild(el('div', 'grp', t)); return; } const a = el('a', null, t); a.href = '#' + id; a.dataset.id = id; nav.appendChild(a); });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { nav.querySelectorAll('a').forEach(a => a.classList.toggle('on', a.dataset.id === e.target.id)); } }), {rootMargin: '-20% 0px -70% 0px'});
+  document.querySelectorAll('section.doc').forEach(s => io.observe(s)); })();
+$('focusSel').onchange = e => { if (e.target.value) document.body.dataset.focus = e.target.value; else delete document.body.dataset.focus; };
+$('hideCode').onchange = e => document.body.classList.toggle('nocode', e.target.checked);
+$('chipTests').textContent = META.pruebas + ' pruebas automáticas';
+$('reglaEntrega').textContent = DATOS.regla_de_entrega;
+
+/* ───── fundamentos ───── */
+const TS = DS.token_set, V = o => (o && o.value !== undefined) ? o.value : o;
+function lum(hex){ const c = hex.replace('#', ''); const r = [0, 2, 4].map(i => parseInt(c.substr(i, 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4)); return .2126 * r[0] + .7152 * r[1] + .0722 * r[2]; }
+function ratio(a, b){ const x = lum(a), y = lum(b); return ((Math.max(x, y) + .05) / (Math.min(x, y) + .05)); }
+(function(){
+  const cont = $('swColors'), C = k => V(TS.colors[k]);
+  Object.entries(TS.colors).forEach(([k, o]) => { const c = el('div', 'c'); const i = el('i'); i.style.background = V(o); const d = el('div'); d.appendChild(el('b', null, k.replace(/_/g, '-'))); d.appendChild(el('br')); d.appendChild(document.createTextNode(V(o) + (o.usage ? ' · ' + o.usage : ''))); c.append(i, d); cont.appendChild(c); });
+  const pares = [['text_primary', 'surface', 'Texto principal'], ['text_muted', 'surface', 'Texto de apoyo'], ['on_primary', 'primary', 'Texto sobre acción principal'], ['success_text', 'success_pale', 'Estado: éxito'], ['warning_text', 'warning_pale', 'Estado: advertencia'], ['error_text', 'error_pale', 'Estado: error'], ['info_text', 'info_pale', 'Estado: información'], ['primary', 'background', 'Azul sobre fondo']];
+  const t = $('tbContrast'); const h = el('tr'); ['Par', 'Uso', 'Contraste', 'AA texto (4.5:1)'].forEach(x => h.appendChild(el('th', null, x))); t.appendChild(h);
+  pares.forEach(([a, b, u]) => { const r = ratio(C(a), C(b)); const tr = el('tr'); tr.append(el('td', null, a.replace(/_/g, '-') + ' / ' + b.replace(/_/g, '-')), el('td', null, u), el('td', null, r.toFixed(2) + ' : 1'), el('td', null, r >= 4.5 ? 'Cumple' : 'No cumple')); t.appendChild(tr); });
+  const ty = $('typo'); const ft = TS.typography;
+  ty.appendChild(el('p', null, 'Familia: ' + ft.font_family + ' · Mono: ' + ft.font_mono));
+  Object.entries(ft.scale).forEach(([k, o]) => { const r = el('div'); r.style.cssText = 'display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:baseline;border-bottom:1px solid var(--c-line);padding:10px 0'; r.appendChild(el('code', null, k.replace('_', '-') + ' · ' + o.size + '/' + o.line_height)); const s = el('span', null, 'Prepara tu entrega con confianza'); s.style.cssText = 'font-size:' + (k === 'heading_xl' ? 'min(' + o.size + ',7vw)' : o.size) + ';line-height:' + o.line_height + ';' + (k.startsWith('heading') ? 'font-weight:500;letter-spacing:-.03em' : ''); r.appendChild(s); ty.appendChild(r); });
+  const sp = $('spaces'); Object.entries(TS.spacing).forEach(([k, o]) => { const r = el('div'); r.style.cssText = 'display:grid;grid-template-columns:70px 60px 1fr;gap:12px;align-items:center;margin-bottom:8px;font-size:13px'; const b = el('div', 'spacebar'); b.style.width = V(o); r.append(el('code', null, k), el('span', null, V(o)), b); sp.appendChild(r); });
+  const rd = $('radii'); Object.entries(TS.radius).forEach(([k, o]) => { const b = el('div', 'bx', k + ' · ' + V(o)); b.style.borderRadius = V(o) === '999px' || k === 'pill' ? '999px' : V(o); rd.appendChild(b); });
+  const sh = $('shadows'); Object.entries(TS.shadows).forEach(([k, o]) => { const b = el('div', 'bx', k); b.style.boxShadow = V(o); sh.appendChild(b); });
+  $('tmin').textContent = V(TS.target.min); $('fw').textContent = V(TS.focus.width);
+  const ic = $('icons'); Object.keys(ICONS).forEach(n => { const b = el('div'); b.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:6px;width:92px;font-size:12px;background:var(--c-surface);border:1px solid var(--c-border);border-radius:var(--r-md);padding:12px 6px'; b.appendChild(icono(n, 24)); b.appendChild(el('span', null, n)); ic.appendChild(b); });
+})();
+
+/* ───── fichas de componentes ───── */
+const REGLA_ES = {max_buttons: n => 'Máximo ' + n + ' botones.', max_primary_buttons: n => 'Máximo ' + n + ' btn-primary.', max_actions: n => 'Máximo ' + n + ' acciones.', heading_required: () => 'Siempre lleva un heading.', max_action_rows: n => 'Máximo ' + n + ' action-row.', no_nested_card: () => 'No se anida una tarjeta dentro de otra.', exactly_two_regions: () => 'Exactamente dos regiones.', no_nested_split: () => 'No se anida un diseño dividido dentro de otro.'};
+function ficha(cid){
+  const c = CAT[cid], g = GOB[cid] || {}; const box = el('article', 'sheet'); box.id = 'c-' + cid;
+  const hd = el('header'); hd.appendChild(el('h4', null, c.name || cid)); hd.appendChild(el('code', null, cid)); hd.appendChild(el('span', 'chip ' + (c.origen === 'p2' ? 'warn' : ''), c.origen === 'p2' ? 'Molécula de P2' : 'Sistema DS-01')); box.appendChild(hd);
+  box.appendChild(el('p', 'sub', (c.uso || []).join(' ') || 'Sin descripción de uso en el sistema.'));
+  const ej = EJ[cid]; if (ej) { const sp = el('div', 'spec'); box.appendChild(sp); const st = nuevoEstado(ej.estado); montar(sp, ej.nodos, st); }
+  const t = el('table', 't'); const h = el('tr'); ['Propiedad', 'Quién decide', 'Valores o descripción'].forEach(x => h.appendChild(el('th', null, x))); t.appendChild(h);
+  const filas = Object.keys(g); if (!filas.length) { const tr = el('tr'); const td = el('td', null, 'Este componente no tiene propiedades propias: su contenido lo definen sus hijos.'); td.colSpan = 3; tr.appendChild(td); t.appendChild(tr); }
+  filas.forEach(p => { const tag = g[p]; const tr = el('tr', 'grow'); tr.dataset.tag = tag; const td3 = el('td'); const en = (c.enums || {})[p]; const desc = (c.contenido || {})[p];
+    td3.textContent = [en ? 'Opciones: ' + en.join(' · ') : '', desc && !en ? desc : '', tag === 'SISTEMA' ? 'Lo calcula el motor: si el modelo la escribe, el validador rechaza la propuesta.' : '', tag === 'INVARIANT' ? 'La fija la diseñadora: si el modelo la escribe, el validador rechaza la propuesta.' : ''].filter(Boolean).join(' — ') || '—';
+    const tg = el('td'); tg.appendChild(el('span', 'tag ' + tag, tag)); tr.append(el('td', null, p), tg, td3); t.appendChild(tr); });
+  const tw = el('div', 'tw'); tw.appendChild(t); box.appendChild(tw);
+  const reglas = []; if (c.hijos) reglas.push('Hijos permitidos: ' + (c.hijos.length ? c.hijos.join(', ') : 'ninguno') + '.');
+  if (c.max_hijos != null) reglas.push('Máximo de hijos: ' + c.max_hijos + '.'); if (c.min_hijos) reglas.push('Mínimo de hijos: ' + c.min_hijos + '.');
+  Object.entries(c.reglas || {}).forEach(([k, v]) => { if (REGLA_ES[k]) reglas.push(REGLA_ES[k](v)); });
+  if (reglas.length) { box.appendChild(el('h4', null, 'Reglas')); const u = el('ul'); reglas.forEach(r => u.appendChild(el('li', null, r))); box.appendChild(u); }
+  if (ej) { box.appendChild(el('h4', null, 'JSON que debe escribir el modelo')); const pre = el('pre', 'code', J(ej.nodos)); box.appendChild(pre); }
+  return box;
+}
+const ORDEN = {atomos: ['heading', 'text-body', 'text-muted', 'badge', 'icon', 'divider', 'btn-primary', 'btn-secondary', 'progress-bar'], moleculas: ['card', 'stat-block', 'action-row', 'alert', 'requirement-item', 'material-picker', 'progress-summary', 'brief-viewer'], organismos: ['header-section', 'content-grid', 'navigation-bar', 'split-layout']};
+Object.entries(ORDEN).forEach(([k, ids]) => { const cont = $(k); ids.forEach(id => { if (CAT[id]) cont.appendChild(ficha(id)); }); });
+(function(){ const t = $('tbExcl'); const h = el('tr'); ['Componente', 'Motivo'].forEach(x => h.appendChild(el('th', null, x))); t.appendChild(h); Object.entries(EXCL).forEach(([k, v]) => { const tr = el('tr'); tr.append(el('td', null, k), el('td', null, v)); t.appendChild(tr); }); })();
+
+/* ───── demos ───── */
+(function(){
+  const trampaNodos = [
+    {molecule_id: 'progress-summary', content: {mostrar_pendientes: true}},
+    {organism_id: 'split-layout', content: {ratio: '1:1'}, children: [{molecule_id: 'requirement-item', content: {requisito_id: 'R3', mostrar_descripcion: true, ayuda: 'El material debe estar en estado listo; si le faltan responsables, aún no cumple.'}}, {molecule_id: 'material-picker', content: {requisito_id: 'R3', material_ids: ['M4', 'M5', 'M3']}}]}];
+  let est = nuevoEstado({R1: 'M1', R2: 'M2'}); let ctx = montar($('demoTrampa'), trampaNodos, est);
+  $('resetTrampa').onclick = () => { est = nuevoEstado({R1: 'M1', R2: 'M2'}); const c = $('demoTrampa'); const nuevo = c.cloneNode(false); c.replaceWith(nuevo); ctx = montar(nuevo, trampaNodos, est); };
+  const cont = $('demoEstados');
+  const aviso = (cls, ic, tit, txt, bot) => { const n = el('div', 'notice ' + cls); n.appendChild(conIcono('div', 'nt', ic, tit, 20)); n.appendChild(el('p', null, txt)); if (bot) { const f = el('div', 'row-act'); bot.forEach(([l, p]) => f.appendChild(el('button', 'ab ' + (p ? 'p' : 's'), l))); n.appendChild(f); } return n; };
+  [['Pendiente', aviso('adapt', 'info', 'Reorganicé la pantalla a partir de tu pedido', 'Ahora los pasos están separados y el brief aparece primero.', [['Mantener este cambio', true], ['Deshacer', false]])],
+   ['Mantenido', aviso('kept', 'check', 'Cambio mantenido · Reorganicé la pantalla', 'Sigues en la nueva organización. Puedes deshacerla cuando quieras; tu trabajo no se pierde.', [['Deshacer', false]])],
+   ['Deshecho', aviso('undone dsmsg', 'undo', 'Cambio deshecho', 'Volviste a la pantalla anterior, en el mismo punto. El intento queda en el registro de la corrida.')],
+   ['Error', aviso('err', 'alert', 'No pude reorganizar la pantalla', 'La propuesta del modelo no pasó la validación. Todo sigue como estaba y tu trabajo está intacto.')]]
+   .forEach(([t, n]) => { cont.appendChild(el('h4', null, t)); n.style.pointerEvents = 'none'; cont.appendChild(n); });
+  montar($('demoBrief'), [{molecule_id: 'brief-viewer', content: {summary: 'Explica el problema, muestra tu evidencia y planifica dos semanas.', detail_level: 'brief'}}], nuevoEstado());
+})();
+
+/* ───── pantallas de referencia ───── */
+(function(){
+  const cont = $('screens');
+  REFV.estados.forEach(e => {
+    const s = el('div', 'screen'); const bar = el('div', 'bar'); bar.append(el('b', null, e.titulo || e.id), document.createTextNode(' · estado '), el('code', null, e.id), document.createTextNode(e.es_confirmacion ? ' · confirmación' : '')); s.appendChild(bar);
+    const body = el('div', 'body'); s.appendChild(body); cont.appendChild(s);
+    montar(body, e.componentes, nuevoEstado({R1: 'M1', R2: 'M2', R3: 'M4'}));
+  });
+})();
+
+/* ───── reglas del validador ───── */
+(function(){
+  const t = $('tbRules'); const h = el('tr'); ['Familia', 'Regla', 'Mensaje de ejemplo'].forEach(x => h.appendChild(el('th', null, x))); t.appendChild(h);
+  RULES.forEach(([f, r, m]) => { const tr = el('tr'); const td = el('td'); td.appendChild(el('code', null, m)); tr.append(el('td', null, f), el('td', null, r), td); t.appendChild(tr); });
+})();
+
+/* ───── corrida real de ejemplo ───── */
+(function(){
+  const r = RUN, v = r.validacion, m = v.metricas, ll = r.llamada_api, cont = $('runEj'); const ev = r.sesion_eventos || [];
+  const grupos = {}; v.errores.forEach(e => { const k = e.startsWith('estado') && e.includes(': ') ? e.split(': ').slice(1).join(': ') : e; grupos[k] = (grupos[k] || 0) + 1; });
+  const kv = el('dl', 'kv'); [['Corrida', r.id.slice(0, 8) + ' · ' + new Date(r.ts * 1000).toLocaleDateString('es-CL')], ['Modelo', ll.proveedor + ' · ' + (ll.model_version_reportado || ll.model_requested) + ' · ' + ll.duracion_seg + ' s'], ['Versiones', r.sistema_diseno.ds + ' · adiciones ' + r.sistema_diseno.adiciones_p2 + ' · prompt ' + (r.sistema_diseno.prompt || 'anterior a 3.1 (no se registraba)')], ['Observación previa', r.observacion], ['Condiciones', 'familiaridad ' + r.pack.familiaridad + ' · núcleo de ' + r.pack.nucleo.length + ' reglas · libertad: ' + (r.pack.libertad_concedida || []).join('; ')],
+    ['Propuesta', m.n_estados + ' estados · primer contenido: ' + m.tipos_en_estado_inicial.join(', ') + ' · ' + m.n_ayudas_en_requisitos + ' requisitos con ayuda · ' + m.n_acciones_totales + ' acciones'], ['Validación', v.errores.length + ' errores en ' + Object.keys(grupos).length + ' reglas · ' + (v.completable ? 'la entrega es posible en ' + m.pasos_minimos_hasta_entrega + ' pasos como mínimo' : 'la entrega no es posible')],
+    ['Sesión', ev.length + ' acciones de la persona, ' + ev.filter(e => e.resultado.bloqueado).length + ' bloqueadas por el sistema']].forEach(([a, b]) => { kv.appendChild(el('dt', null, a)); kv.appendChild(el('dd', null, b)); });
+  cont.appendChild(kv);
+  const t = el('table', 't'); const h = el('tr'); ['Veces', 'Regla que se incumplió'].forEach(x => h.appendChild(el('th', null, x))); t.appendChild(h);
+  Object.entries(grupos).sort((a, b) => b[1] - a[1]).forEach(([k, n]) => { const tr = el('tr'); tr.append(el('td', null, String(n)), el('td', null, k)); t.appendChild(tr); }); const tw = el('div', 'tw'); tw.appendChild(t); cont.appendChild(tw);
+  const tree = el('div', 'tree'); (r.ui_spec.estados || []).forEach(e => { const sal = []; (function w(ns){ (ns || []).forEach(n => { if (n.atom_id && n.atom_id.startsWith('btn-') && n.content && n.content.accion) sal.push(n.content.accion.tipo + ' → ' + n.content.accion.hacia); w(n.children); }); })(e.componentes); tree.appendChild(el('div', null, e.id + (e.es_confirmacion ? ' (confirmación)' : '') + (sal.length ? '   ⟶   ' + sal.join(', ') : ''))); });
+  cont.appendChild(el('h4', null, 'Mapa de estados y salidas')); cont.appendChild(tree);
+})();
+
+/* ───── razones de diseño (columna editable) ───── */
+(function(){
+  const filas = [
+    ['Un material solo puede cubrir un requisito', 'Caso (inventada por mí)', 'Esencial para el caso', 'Hace que cumplir un requisito tenga consecuencias: evita usar un mismo archivo para todo.'],
+    ['Un borrador se puede adjuntar, pero no cumple', 'Caso (inventada por mí)', 'Esencial para el caso', 'Crea una situación donde lo tentador no basta y la interfaz debe explicarlo.'],
+    ['Solo se entrega si todos los requisitos obligatorios cumplen', 'Caso (inventada por mí)', 'Esencial para el caso', 'Es el límite que hace que la entrega signifique algo.'],
+    ['No inventar requisitos, materiales ni plazos', 'Núcleo del caso (instrucción al modelo, no regla ejecutable)', 'Esencial', 'Evita que el modelo cambie la tarea.'],
+    ['requirement-item y material-picker no van dentro de card', 'Adición de P2: no se declaró que fueran hijos de card', 'Por decidir', 'No fue una decisión explícita: apareció al correr Gemini, que sí los agrupó así.'],
+    ['Un solo btn-primary por grupo de acciones; máximo 3 acciones', 'Tu documentación del sistema (v3)', 'Del sistema', 'No consta el motivo en el JSON.'],
+    ['Máximo 3 niveles de anidación', 'Reglas globales de DS-01', 'Del sistema', 'No consta el motivo en el JSON.'],
+    ['Íconos solo del set de 12', 'Tu documentación del sistema (v3)', 'Del sistema', 'Geometría fija en los tokens; no consta más motivo.'],
+    ['El estado nunca se comunica solo con color', 'Prototipo (aplicado en el renderer)', 'Por confirmar', 'Confirma si también es una regla de tu sistema.'],
+    ['es_confirmacion solo en el estado final, sin botón de entrega', 'Motor de P2', 'Incidental', 'Gemini marcó como confirmación un paso previo: la instrucción era ambigua.'],
+    ['Sin botones «Cancelar» ni «Volver al inicio» hacia estados inexistentes', 'Marco de P2', 'Incidental', 'La tarea no define una pantalla de inicio; Gemini inventó el destino.'],
+    ['Lo que escribes en «núcleo» es instrucción, no regla ejecutable', 'Prototipo', 'Límite conocido', 'Solo lo programado en el validador o en el sistema se comprueba.']];
+  const t = $('tbRazones');
+  filas.forEach((f, i) => { const tr = el('tr'); f.forEach(x => tr.appendChild(el('td', null, x)));
+    const td = el('td'); td.contentEditable = 'true'; td.setAttribute('role', 'textbox'); td.setAttribute('aria-label', 'Tu justificación de: ' + f[0]); td.style.minWidth = '200px'; td.style.background = 'var(--c-background)';
+    try { td.textContent = localStorage.getItem('p2doc_r' + i) || ''; } catch (e) {}
+    td.addEventListener('input', () => { try { localStorage.setItem('p2doc_r' + i, td.textContent); } catch (e) {} });
+    tr.appendChild(td); t.appendChild(tr); });
+})();
+
+/* ───── evidencias por versión y adaptación real ───── */
+(function(){
+  const fila = (cells) => { const tr = el('tr'); cells.forEach(c => tr.appendChild(el('td', null, c))); return tr; };
+  const t = $('tbEvid'); const h = el('tr'); ['Evidencia', 'Corrida', 'Versiones', 'Adaptaciones', 'Qué respalda', 'Qué no respalda'].forEach(x => h.appendChild(el('th', null, x))); t.appendChild(h);
+  const ver = r => r.sistema_diseno.ds + ' · adiciones ' + r.sistema_diseno.adiciones_p2 + ' · prompt ' + (r.sistema_diseno.prompt || 'anterior a 3.1');
+  const fecha = r => r.id.slice(0, 8) + ' · ' + new Date(r.ts * 1000).toLocaleDateString('es-CL');
+  t.appendChild(fila(['Primera propuesta con el sistema v3', fecha(RUN), ver(RUN), '0', 'Cómo propone un recorrido el modelo con el sistema v3 y qué regla chocó (15 errores en 5 reglas). Archivo: data/ejemplos/corrida_real_gemini_1.json', 'Nada sobre reorganización durante el uso.']));
+  t.appendChild(fila(['Adaptación real (versión anterior)', fecha(RUN2.meta), ver(RUN2.meta), '1 («' + RUN2.adaptacion.solicitud + '»)', 'Que el modelo conservó el progreso y que, ante un pedido sobre algo ya resuelto, hizo un cambio mínimo. Archivo: data/ejemplos/corrida_anterior_con_adaptacion.json', 'Nada sobre la versión actual ni sobre otros pedidos.']));
+  t.appendChild(fila(['18 corridas del protocolo (8 oct)', '12 con Gemini 2.5 Flash · 6 con NVIDIA', 'ds-01 v3.0.0 · adiciones 3.1.0 · prompt 3.1.0', '13 pedidos · 4 aplicables · 3 mantenidos', 'Que la regla de la tarjeta explica 132 de 195 errores; que una adaptación puede agregar una pantalla real («necesito entender mejor el brief», NVIDIA); que el modelo a veces declara cambios que no hizo (2 casos).', 'Que la adaptación mejore la experiencia: falta la prueba con personas.']));
+  const a = RUN2.adaptacion, cont = $('adEj'); const kv = el('dl', 'kv');
+  [['Corrida', fecha(RUN2.meta) + ' · ' + RUN2.meta.modelo + ' · ' + RUN2.meta.duracion + ' s'], ['Versiones', ver(RUN2.meta)], ['Pedido de la persona', '«' + a.solicitud + '»'], ['Resultado', (a.aplicable ? 'Propuesta aplicable' : 'Propuesta no aplicable') + ' · decisión registrada: ' + (a.decision || 'sin decidir')],
+   ['Lo que explicó el modelo', a.resumen_cambio || '—'], ['Progreso al pedirlo', Object.entries(a.progreso).map(([k, v]) => k + ' ← ' + v).join(', ') + ' (se conservó)']].forEach(([x, y]) => { kv.appendChild(el('dt', null, x)); kv.appendChild(el('dd', null, y)); });
+  cont.appendChild(kv);
+  const tb = el('table', 't'); const hh = el('tr'); ['Antes', 'Después'].forEach(x => hh.appendChild(el('th', null, x))); tb.appendChild(hh);
+  const n = Math.max(a.estructura_antes.length, a.estructura_despues.length);
+  for (let i = 0; i < n; i++) tb.appendChild(fila([a.estructura_antes[i] || '', a.estructura_despues[i] || '']));
+  const tw = el('div', 'tw'); tw.appendChild(tb); cont.appendChild(el('h4', null, 'Estructura del primer estado, componente por componente')); cont.appendChild(tw);
+  const t2 = el('table', 't'); const h2 = el('tr'); ['Indicador', 'Antes', 'Después'].forEach(x => h2.appendChild(el('th', null, x))); t2.appendChild(h2);
+  [['Estados', 'n_estados'], ['Acciones', 'n_acciones_totales'], ['Requisitos con ayuda', 'n_ayudas_en_requisitos'], ['Pasos mínimos hasta entregar', 'pasos_minimos_hasta_entrega']].forEach(([nom, k]) => t2.appendChild(fila([nom, String(a.metricas_antes[k]), String(a.metricas_despues[k])])));
+  t2.appendChild(fila(['Errores con el validador actual', RUN2.revalidacion.antes + ' errores', RUN2.revalidacion.despues + ' errores']));
+  const tw2 = el('div', 'tw'); tw2.appendChild(t2); cont.appendChild(tw2);
+  cont.appendChild(el('p', 'sub', 'La última fila vuelve a validar las dos propuestas con el validador actual; no es lo que se registró en su momento.'));
+})();
+</script>
+</body>
+</html>
