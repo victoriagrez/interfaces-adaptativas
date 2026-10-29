@@ -108,7 +108,7 @@ ol.steps li.ai b::after{content:"IA";font-family:var(--f-mono);font-size:.68rem;
 .t-abie{background:var(--lime);color:var(--on-lime)}
 .t-sist{background:var(--line);color:var(--ink)}
 .decide b{font-size:.98rem;line-height:1.3}
-.decide span{font-size:.85rem;color:var(--muted);line-height:1.35}
+.decide span:not(.tag){font-size:.85rem;color:var(--muted);line-height:1.35}
 @media (min-width:640px){.decide{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 .capas{display:grid;gap:.75rem}
@@ -254,7 +254,7 @@ footer .ask{background:var(--lime);color:var(--on-lime);padding:1rem;font-weight
     <ol class="steps">
       <li><span class="n">01</span><div><b>Diseñadora</b><p>Defino las condiciones iniciales: la intención, lo que no se puede romper y cuánta libertad tiene la IA. Las reviso entre una vuelta y otra.</p></div></li>
       <li><span class="n">02</span><div><b>Sistema de diseño</b><p>DS-01 Adaptivo: los componentes, colores y tipografías, y quién decide cada propiedad de cada pieza.</p></div></li>
-      <li class="ai"><span class="n">03</span><div><b>Modelo de lenguaje</b><p>Gemini (o Claude) propone la pantalla y su recorrido, escrita como una «receta» en JSON.</p></div></li>
+      <li class="ai"><span class="n">03</span><div><b>Modelo de lenguaje</b><p>Gemini 2.5 Flash (o un modelo de NVIDIA) propone la pantalla y su recorrido, escrita como una «receta» en JSON.</p></div></li>
       <li><span class="n">04</span><div><b>Validador</b><p>Código que revisa la receta y rechaza lo que rompe las reglas, por ejemplo un botón que lleva a una pantalla que no existe.</p></div></li>
       <li><span class="n">05</span><div><b>Persona</b><p>Usa la interfaz, puede pedir cambios mientras trabaja («necesito entender mejor el enunciado») y decide si los mantiene o los deshace.</p></div></li>
     </ol>
@@ -306,7 +306,7 @@ footer .ask{background:var(--lime);color:var(--on-lime);padding:1rem;font-weight
       <div class="nums" role="list">
         <div role="listitem"><b>16</b><span>propuestas de interfaz (2 llamadas fallaron)</span></div>
         <div role="listitem"><b>13</b><span>permitían completar la entrega</span></div>
-        <div role="listitem"><b>10</b><span>entregas que hice usando la pantalla</span></div>
+        <div role="listitem"><b>10</b><span>entregas que completé yo misma, en pruebas</span></div>
         <div role="listitem" class="k"><b>2</b><span>sin ningún error del sistema de diseño</span></div>
       </div>
       <div class="stat">
@@ -338,12 +338,15 @@ footer .ask{background:var(--lime);color:var(--on-lime);padding:1rem;font-weight
       <h3>Cambios durante el uso</h3>
       <p>Pedí 13 cambios mientras usaba las interfaces. 4 se pudieron aplicar y mantuve 3. El más claro fue con NVIDIA: pedí «necesito entender mejor el brief» y agregó una pantalla nueva con el texto completo. En 2 casos el modelo dijo que había reorganizado la pantalla y la especificación quedó idéntica: lo mismo que vi en P1, la IA no se revisa bien a sí misma.</p>
       <p>Con lo aprendido ajusté el prototipo (versión 3.2): las adaptaciones solo se frenan por errores nuevos, cada cambio muestra lo que cambió de verdad junto a lo que dice el modelo, y una lista de materiales vacía ya no deja la entrega imposible.</p>
+      <p><b>Después, del 20 al 27 de octubre (versión 4.3.0).</b> Documenté 6 intentos de adaptación desde un mismo punto de partida. Ante «me pierdo entre los requisitos» el modelo agregó estructura y explicación, y varió mucho entre repeticiones; ante «ya entendí, necesito revisar qué me falta» solo me llevó a pantallas que ya existían. Otra vez, lo que el modelo dijo que hizo no siempre coincidió con lo que cambió.</p>
+      <p>También pasé al sistema una decisión que la IA resolvía mal: el sello de «entregado» de la pantalla de confirmación ahora lo dibuja el sistema, con una animación corta. Con ese cambio, de las 9 interfaces guardadas para la feria, las que no tienen ningún error pasaron de 2 a 5. Con esto cierro P2.</p>
 
     </div>
 
     <div class="proto">
-      <div class="head"><span class="tagp">P3</span><span class="status">Abierto</span></div>
-      <p>Lo defino después de analizar P2. Así funciona investigar construyendo: construir, observar, reflexionar y reencuadrar.</p>
+      <div class="head"><span class="tagp">P3</span><span class="status">En curso</span></div>
+      <h3>¿Cambia la experiencia si mejoro el sistema de diseño y dejo igual lo que decide la IA?</h3>
+      <p>Rediseño en Figma el sistema de diseño de P2, empezando por la tarjeta de requisito, y mantengo la misma repartición de decisiones: qué queda fijo, qué decido yo y qué decide la IA. Si las mismas decisiones de la IA se entienden mejor con P3, la diferencia viene del sistema y no del modelo. Así funciona investigar construyendo: construir, observar, reflexionar y reencuadrar.</p>
     </div>
   </section>
 
