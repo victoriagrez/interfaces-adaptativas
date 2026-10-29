@@ -229,7 +229,7 @@ details.ay>div{font-size:var(--fs-small);color:var(--c-text-primary);padding:var
 <a class="skip" href="#main">Saltar al contenido</a>
 <aside class="side" aria-label="Navegación de la documentación">
   <h2>DS-01 Adaptivo + P2</h2>
-  <p class="ver">Documentación · versión de trabajo 3.1</p>
+  <p class="ver">Documentación al 8 de octubre (3.1) · prototipo actual 4.3.0</p>
   <nav id="nav"></nav>
   <div class="ctrl">
     <label>Resaltar quién decide<select id="focusSel"><option value="">Todas las propiedades</option><option>INVARIANT</option><option>CONSTRAINED</option><option>OPEN</option><option>SISTEMA</option></select></label>
@@ -242,6 +242,7 @@ details.ay>div{font-size:var(--fs-small);color:var(--c-text-primary);padding:var
   <p style="margin:0 0 var(--sp-md);font-size:var(--fs-small)"><a href="./">← Volver al resumen del proyecto</a></p>
   <h1>El prototipo y su sistema de diseño</h1>
   <p>Documentación de un instrumento de investigación: una interfaz que un modelo de lenguaje genera y reorganiza mientras una persona prepara una entrega, dentro de un sistema de diseño que decide qué puede y qué no puede hacer.</p>
+  <div class="note warn" style="margin-top:var(--sp-md)"><strong>Estado al 28 de octubre de 2026</strong><p>Esta página documenta el sistema tal como estaba el 8 de octubre. El prototipo siguió hasta las adiciones 4.3.0: amplié la tarjeta de requisito, documenté 6 intentos de adaptación desde un mismo punto de partida (series S1 y S2, 20 de octubre) y el sello de «entregado» de la confirmación pasó a dibujarlo el sistema (26 de octubre). P2 quedó cerrado el 27 de octubre y ahora trabajo en P3. El resumen está en la <a href="./">página principal</a>.</p></div>
   <div class="note" style="margin-top:var(--sp-md)"><strong>Actualización del 8 de octubre de 2026 (adiciones 3.2)</strong><p>Esta documentación describe la versión 3.1. Después de analizar 18 corridas cambié tres cosas: una adaptación solo se frena por errores nuevos (los heredados de la interfaz anterior quedan registrados aparte), una lista de materiales vacía se interpreta como «todos», y cada adaptación muestra el cambio real junto a lo que dice el modelo. Los resultados de esas corridas están en el resumen del proyecto.</p></div>
   <div class="meta"><span class="chip">Sistema de diseño DS-01 Adaptivo 3.0.0</span><span class="chip">Adiciones de P2 3.1.0</span><span class="chip" id="chipTests"></span><span class="chip warn">Instrumento de investigación, no producto</span></div>
 </div>
@@ -495,7 +496,7 @@ details.ay>div{font-size:var(--fs-small);color:var(--c-text-primary);padding:var
 <tr><td>Deshecho</td><td>Vuelve a la pantalla anterior, en el mismo punto</td><td>deshecha</td></tr>
 <tr><td>Error</td><td>La propuesta no pasó la validación; todo sigue igual</td><td>Intento con los problemas encontrados</td></tr></table>
 <h3>Evidencia real de una adaptación (versión anterior del prototipo)</h3>
-<p>Esta es la única adaptación real registrada hasta ahora. Se hizo con una <strong>versión anterior</strong> (sistema de diseño 1.0.0, adiciones 2.0.0), por lo que no prueba nada sobre la versión actual. El registro completo está en <code>data/ejemplos/corrida_anterior_con_adaptacion.json</code>.</p>
+<p>Este ejemplo se hizo con una <strong>versión anterior</strong> (sistema de diseño 1.0.0, adiciones 2.0.0), por lo que no prueba nada sobre la versión actual. Las adaptaciones de las versiones siguientes (las 18 corridas del 8 de octubre y las series S1 y S2 del 20 de octubre) están resumidas en la página principal. El registro de este ejemplo está en <code>data/ejemplos/corrida_anterior_con_adaptacion.json</code>.</p>
 <div id="adEj"></div>
 <div class="note warn"><strong>Un límite que conviene recordar</strong><p>Si pides un cambio sobre algo que ya está resuelto, el modelo puede hacer un cambio mínimo. En esa corrida, al pedir «quiero ver todo junto» sobre una propuesta que ya era una sola pantalla, Gemini casi no cambió nada. Usa pedidos que obliguen a otra estructura.</p></div>
 </section>
@@ -511,10 +512,12 @@ details.ay>div{font-size:var(--fs-small);color:var(--c-text-primary);padding:var
 <h3>Ejecutar</h3>
 <pre class="code">cd p2_v2
 $env:GEMINI_API_KEY="tu_clave"     # PowerShell; en macOS/Linux: export GEMINI_API_KEY=...
+$env:NVIDIA_API_KEY="tu_clave"     # opcional, para usar un modelo de NVIDIA
 python server.py
 # abre http://127.0.0.1:8787   (el proveedor «Demo» funciona sin clave)</pre>
 <div class="tw"><table class="t"><tr><th>Proveedor</th><th>Variables de entorno</th><th>Modelo por defecto</th></tr>
 <tr><td>Gemini</td><td><code>GEMINI_API_KEY</code>, opcional <code>GEMINI_MODEL</code></td><td><code>gemini-2.5-flash</code></td></tr>
+<tr><td>NVIDIA</td><td><code>NVIDIA_API_KEY</code>, opcional <code>NVIDIA_MODEL</code></td><td><code>nvidia/nemotron-3-super-120b-a12b</code></td></tr>
 <tr><td>Claude</td><td><code>ANTHROPIC_API_KEY</code>, opcional <code>CLAUDE_MODEL</code></td><td><code>claude-sonnet-5-5</code></td></tr>
 <tr><td>OpenAI o compatible</td><td><code>OPENAI_API_KEY</code>, <code>OPENAI_MODEL</code>, opcional <code>OPENAI_BASE_URL</code></td><td>Sin valor por defecto</td></tr>
 <tr><td>Demo</td><td>Ninguna</td><td>Especificaciones escritas a mano</td></tr></table></div>
@@ -555,8 +558,8 @@ python server.py
 <tr><td>DS-01 Adaptivo 3.0 + gobernanza</td><td>Identidad y tokens de Figma Make; etiquetas de gobernanza que el validador hace cumplir; componentes nuevos (visor del brief, barra de progreso, diseño dividido, ícono); variante <code>accent</code> pasa a <code>info</code>; cuatro estados de la propuesta de cambio; se eliminan plantillas y reglas por perfil.</td></tr>
 <tr><td>Adiciones 3.1</td><td>Campo «situación de la persona»; prompt más claro sobre confirmación y salida; el validador rechaza una confirmación con botón de entrega; errores agrupados por regla; los parámetros sin efecto reciben efecto y una auditoría lo vigila; ficha por iteración.</td></tr></table></div>
 <h3>Comprobado y no comprobado</h3>
-<div class="two"><div class="note ok"><strong>Comprobado</strong><p>Pruebas automáticas del motor, del servidor y de la auditoría de parámetros. Prueba en un navegador real del flujo completo con el proveedor demo. Una corrida real con Gemini 2.5 Flash (ver «Evidencias por versión»). Esa corrida no tiene adaptaciones registradas: todavía no aporta evidencia de reorganización durante el uso.</p></div>
-<div class="note warn"><strong>No comprobado</strong><p>Generaciones repetidas con el prompt actual. Una adaptación real con su antes y su después en la versión actual. Corridas con otros modelos. Sesiones con personas. El efecto de la adaptación sobre la comprensión del recorrido.</p></div></div>
+<div class="two"><div class="note ok"><strong>Comprobado</strong><p>Pruebas automáticas del motor, del servidor y de la auditoría de parámetros (58 en la versión que documenta esta página; 110 al 27 de octubre). Prueba en un navegador real del flujo completo con el proveedor demo. 18 corridas reales el 8 de octubre (12 con Gemini 2.5 Flash y 6 con modelos de NVIDIA), con pedidos de cambio durante el uso. 6 intentos de adaptación desde un mismo punto de partida (series S1 y S2, 20 de octubre, Gemini 2.5 Flash).</p></div>
+<div class="note warn"><strong>No comprobado</strong><p>Sesiones con otras personas: hasta ahora las entregas las hice yo (capa 3, próximo paso). Suficientes repeticiones para generalizar: son pocas corridas, un caso y pocos modelos. El efecto de la adaptación sobre la comprensión del recorrido.</p></div></div>
 <h3>Limitaciones</h3>
 <ul><li>El JSON del sistema se reconstruyó desde la documentación de Figma Make; el original puede diferir en detalles.</li><li>Los textos que escribe el modelo no se verifican contra el brief.</li><li>El título <code>xl</code> mide 52 px y en pantallas de tarea resulta grande: el renderer lo limita según el ancho.</li><li>Las reglas del caso (borrador no cumple, un material por requisito) son inventadas y condicionan lo que el modelo propone.</li><li>El caso está inspirado en entregas de plataformas como Canvas, pero no las simula.</li></ul>
 </section>
@@ -571,7 +574,6 @@ python server.py
 <li>Lee, K. (2025). Towards a Working Definition of Designing Generative User Interfaces. <em>DIS 2025 Companion</em>.</li>
 <li>Sawicki, B. et al. (2026). Qualitative Evaluation of LLM-Designed GUI. arXiv:2601.22759.</li>
 <li>Zimmerman, J., Forlizzi, J., y Evenson, S. (2007). Research through design as a method for interaction design research in HCI. <em>CHI ’07</em> (pp. 493–502). ACM.</li></ul>
-<div class="note warn"><strong>Verifica antes de citar</strong><p>Las referencias de Zimmerman et al. y de Fischer y Giaccardi las agregué de memoria; confirma sus datos (páginas, editores) antes de usarlas en tu memoria.</p></div>
 </section>
 
 </div></main>
